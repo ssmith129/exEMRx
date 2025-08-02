@@ -10,7 +10,9 @@ import {
   Menu,
   X,
   Bell,
-  User
+  User,
+  BarChart3,
+  Mail
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -27,6 +29,9 @@ export default function Layout({ children }: LayoutProps) {
     { name: 'Smart Charting', href: '/charting', icon: FileText },
     { name: 'Referrals', href: '/referrals', icon: Users },
     { name: 'Case Notes', href: '/notes', icon: MessageSquare },
+    { name: 'Reports', href: '/reports', icon: BarChart3 },
+    { name: 'Messages', href: '/messages', icon: Mail },
+    { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
   const isCurrentPage = (href: string) => location.pathname === href;

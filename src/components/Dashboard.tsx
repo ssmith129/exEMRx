@@ -133,7 +133,28 @@ export default function Dashboard() {
       description: 'Begin new patient documentation',
       icon: ClipboardCheck,
       color: 'bg-primary-500',
-      onClick: () => console.log('Start charting')
+      onClick: () => window.location.href = '/charting'
+    },
+    {
+      title: 'View Reports',
+      description: 'Access analytics and reports',
+      icon: TrendingUp,
+      color: 'bg-purple-500',
+      onClick: () => window.location.href = '/reports'
+    },
+    {
+      title: 'Message Center',
+      description: 'Secure team communication',
+      icon: MessageSquare,
+      color: 'bg-yellow-500',
+      onClick: () => window.location.href = '/messages'
+    },
+    {
+      title: 'System Settings',
+      description: 'Configure preferences',
+      icon: Settings,
+      color: 'bg-gray-500',
+      onClick: () => window.location.href = '/settings'
     }
   ];
 
@@ -175,7 +196,7 @@ export default function Dashboard() {
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
             return (

@@ -5,6 +5,10 @@ import Dashboard from './components/Dashboard';
 import SmartCharting from './components/SmartCharting';
 import ReferralForm from './components/ReferralForm';
 import CaseNotes from './components/CaseNotes';
+import PatientChart from './components/PatientChart';
+import ReportsAnalytics from './components/ReportsAnalytics';
+import Settings from './components/Settings';
+import MessageCenter from './components/MessageCenter';
 import Layout from './components/Layout';
 
 function App() {
@@ -32,6 +36,10 @@ function App() {
                     <Route path="/charting" element={<SmartCharting />} />
                     <Route path="/referrals" element={<ReferralForm />} />
                     <Route path="/notes" element={<CaseNotes />} />
+                    <Route path="/patient/:id" element={<PatientChart patientId="1" onClose={() => window.history.back()} />} />
+                    <Route path="/reports" element={<ReportsAnalytics />} />
+                    <Route path="/messages" element={<MessageCenter />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="/" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
                 </Layout>
