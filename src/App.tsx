@@ -43,6 +43,7 @@ function App() {
                       <Route path="/messages" element={<MessageCenter />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                      <Route path="*" element={<Navigate to="/dashboard" replace />} />
                     </Routes>
                   </Layout>
                 ) : (
