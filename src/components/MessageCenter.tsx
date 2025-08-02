@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
+import { AnimatedButton } from './MicroInteractions';
 import { 
   MessageSquare, 
   Send, 
@@ -26,6 +28,7 @@ export default function MessageCenter() {
   const [selectedFolder, setSelectedFolder] = useState('inbox');
   const [showCompose, setShowCompose] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const { addNotification } = useNotifications();
 
   const folders = [
     { id: 'inbox', label: 'Inbox', count: 12, icon: MessageSquare },
@@ -95,7 +98,12 @@ export default function MessageCenter() {
 
   const handleSendReply = () => {
     if (replyText.trim()) {
-      console.log('Sending reply:', replyText);
+      addNotification({
+        type: 'success',
+        title: 'Reply Sent',
+        message: 'Your reply has been sent successfully.',
+        duration: 3000
+      });
       setReplyText('');
     }
   };
@@ -254,14 +262,15 @@ export default function MessageCenter() {
               </div>
               <div className="flex space-x-2">
                 <InteractiveButton variant="secondary">Save Draft</InteractiveButton>
-                <InteractiveButton 
+                <AnimatedButton 
                   variant="primary" 
                   onClick={handleSendReply}
                   disabled={!replyText.trim()}
                   icon={<Send className="h-4 w-4" />}
+                  animation="pulse"
                 >
                   Send Reply
-                </InteractiveButton>
+                </AnimatedButton>
               </div>
             </div>
           </div>

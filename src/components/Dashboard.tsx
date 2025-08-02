@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { useAlerts, AlertSystem, AlertTemplates } from './AlertSystem';
+import { GetStartedCTA, ScheduleDemoCTA, ContactSalesCTA, UpgradeCTA } from './CTAComponents';
+import { FloatingActionButton } from './MicroInteractions';
+import { useNotifications } from './NotificationSystem';
 import PatientSearch from './PatientSearch';
 import AppointmentScheduler from './AppointmentScheduler';
 import { 
@@ -20,6 +24,15 @@ export default function Dashboard() {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const [showAppointmentScheduler, setShowAppointmentScheduler] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const { alerts, addAlert, dismissAlert, handleAction } = useAlerts();
+  const { addNotification } = useNotifications();
+
+  // Initialize with some sample alerts
+  React.useEffect(() => {
+    addAlert(AlertTemplates.patientOverdue('Maria Rodriguez', 5));
+    addAlert(AlertTemplates.complianceIssue('Missing immunization records for 3 patients'));
+    addAlert(AlertTemplates.systemMaintenance('Tonight at 11 PM', '2 hours'));
+  }, []);
 
   const stats = [
     {
@@ -113,6 +126,18 @@ export default function Dashboard() {
   const handleScheduleAppointment = (appointment: any) => {
     console.log('Scheduled appointment:', appointment);
     // Add appointment to calendar/database
+    addNotification({
+      type: 'success',
+      title: 'Appointment Scheduled',
+      message: `Appointment scheduled for ${appointment.patient} on ${appointment.date}`,
+      actions: [
+        {
+          label: 'View Calendar',
+          onClick: () => console.log('View calendar'),
+          variant: 'primary'
+        }
+      ]
+    });
   };
 
   const quickActions = [
@@ -160,6 +185,16 @@ export default function Dashboard() {
     }
   ];
 
+  const handleQuickAction = (action: any) => {
+    addNotification({
+      type: 'info',
+      title: `${action.title} Selected`,
+      message: action.description,
+      duration: 3000
+    });
+    action.onClick();
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -195,6 +230,18 @@ export default function Dashboard() {
         })}
       </div>
 
+      {/* Alerts Section */}
+      {alerts.length > 0 && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">System Alerts</h2>
+          <AlertSystem
+            alerts={alerts}
+            onDismiss={dismissAlert}
+            onAction={handleAction}
+          />
+        </div>
+      )}
+
       {/* Quick Actions */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
@@ -204,7 +251,7 @@ export default function Dashboard() {
             return (
               <button
                 key={index}
-                onClick={action.onClick}
+                onClick={() => handleQuickAction(action)}
                 className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 text-left hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center mb-3">
@@ -217,6 +264,20 @@ export default function Dashboard() {
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <div className="mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <GetStartedCTA />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ScheduleDemoCTA />
+            <ContactSalesCTA />
+          </div>
+        </div>
+        <div className="mt-6">
+          <UpgradeCTA />
         </div>
       </div>
 
@@ -336,6 +397,13 @@ export default function Dashboard() {
           onSchedule={handleScheduleAppointment}
         />
       )}
+
+      {/* Floating Action Button */}
+      <FloatingActionButton
+        icon={<Plus className="h-6 w-6" />}
+        onClick={() => setShowPatientSearch(true)}
+        tooltip="Quick Patient Search"
+      />
     </div>
   );
 }

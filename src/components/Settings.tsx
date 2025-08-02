@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
+import { AnimatedButton } from './MicroInteractions';
 import { 
   Settings as SettingsIcon, 
   User, 
@@ -25,6 +27,7 @@ export default function Settings() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSettings, setSavedSettings] = useState<string[]>([]);
+  const { addNotification } = useNotifications();
 
   const [profileData, setProfileData] = useState({
     firstName: 'Sarah',
@@ -79,6 +82,13 @@ export default function Settings() {
     setSavedSettings([...savedSettings, section]);
     setIsSaving(false);
     
+    addNotification({
+      type: 'success',
+      title: 'Settings Saved',
+      message: `Your ${section} settings have been updated successfully.`,
+      duration: 3000
+    });
+    
     // Remove success indicator after 3 seconds
     setTimeout(() => {
       setSavedSettings(savedSettings.filter(s => s !== section));
@@ -115,14 +125,14 @@ export default function Settings() {
           />
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('profile')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('profile') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('profile') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
 

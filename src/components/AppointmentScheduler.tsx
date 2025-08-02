@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
+import { AnimatedButton } from './MicroInteractions';
 import { 
   Calendar, 
   Clock, 
@@ -27,6 +29,7 @@ export default function AppointmentScheduler({ patient, onClose, onSchedule }: A
   const [provider, setProvider] = useState('');
   const [notes, setNotes] = useState('');
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const { addNotification } = useNotifications();
 
   const appointmentTypes = [
     'WIC Nutrition Assessment',
@@ -109,9 +112,29 @@ export default function AppointmentScheduler({ patient, onClose, onSchedule }: A
     try {
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       onSchedule(appointment);
+      
+      addNotification({
+        type: 'success',
+        title: 'Appointment Scheduled',
+        message: `Appointment scheduled for ${appointment.patient} on ${appointment.date} at ${appointment.time}`,
+        actions: [
+          {
+            label: 'View Calendar',
+            onClick: () => console.log('View calendar'),
+            variant: 'primary'
+          }
+        ]
+      });
+      
       onClose();
     } catch (error) {
       console.error('Failed to schedule appointment:', error);
+      addNotification({
+        type: 'error',
+        title: 'Scheduling Failed',
+        message: 'Unable to schedule appointment. Please try again.',
+        duration: 5000
+      });
     }
   };
 
@@ -312,13 +335,14 @@ export default function AppointmentScheduler({ patient, onClose, onSchedule }: A
               <InteractiveButton variant="secondary" onClick={onClose}>
                 Cancel
               </InteractiveButton>
-              <InteractiveButton
+              <AnimatedButton
                 variant="primary"
                 onClick={handleScheduleAppointment}
                 disabled={!selectedDate || !selectedTime || !appointmentType || !provider}
+                animation="glow"
               >
                 Schedule Appointment
-              </InteractiveButton>
+              </AnimatedButton>
             </div>
           </div>
         </div>

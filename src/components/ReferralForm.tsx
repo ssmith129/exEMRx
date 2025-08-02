@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
+import { AnimatedButton } from './MicroInteractions';
 import { 
   Search, 
   Sparkles, 
@@ -26,6 +28,7 @@ export default function ReferralForm() {
   const [isCreatingReferral, setIsCreatingReferral] = useState(false);
   const [showReferralSuccess, setShowReferralSuccess] = useState(false);
   const [createdReferral, setCreatedReferral] = useState<any>(null);
+  const { addNotification } = useNotifications();
 
   const aiSuggestions = [
     {
@@ -135,6 +138,28 @@ export default function ReferralForm() {
       
       setCreatedReferral(referral);
       setShowReferralSuccess(true);
+      
+      addNotification({
+        type: 'success',
+        title: 'Referral Created Successfully',
+        message: `Referral to ${referral.provider?.provider} has been sent.`,
+        actions: [
+          {
+            label: 'View Referral',
+            onClick: () => console.log('View referral'),
+            variant: 'primary'
+          },
+          {
+            label: 'Create Another',
+            onClick: () => {
+              setSelectedProvider(null);
+              setReferralReason('');
+              setPriorityLevel('Routine');
+            },
+            variant: 'secondary'
+          }
+        ]
+      });
       
       // Reset form after showing success
       setSelectedProvider(null);
@@ -364,15 +389,15 @@ export default function ReferralForm() {
               />
 
               <div className="pt-4 border-t border-gray-200">
-                <InteractiveButton
+                <AnimatedButton
                   variant="primary"
                   fullWidth
                   onClick={handleCreateReferral}
                   disabled={!referralReason.trim()}
-                  loading={isCreatingReferral}
+                  animation="pulse"
                 >
                   {isCreatingReferral ? 'Creating Referral...' : 'Create Referral'}
-                </InteractiveButton>
+                </AnimatedButton>
               </div>
             </div>
           ) : (

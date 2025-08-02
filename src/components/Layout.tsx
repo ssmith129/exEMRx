@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useNotifications } from './NotificationSystem';
 import PatientSearch from './PatientSearch';
 import { 
   Home, 
@@ -23,6 +24,7 @@ export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const location = useLocation();
+  const { addNotification, notifications } = useNotifications();
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -38,8 +40,18 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleSelectPatient = (patient: any) => {
     setShowPatientSearch(false);
-    console.log('Selected patient from header:', patient);
-    // Navigate to patient chart
+    addNotification({
+      type: 'success',
+      title: 'Patient Accessed',
+      message: `Opened chart for ${patient.name}`,
+      actions: [
+        {
+          label: 'View Chart',
+          onClick: () => window.location.href = `/patient/${patient.id}`,
+          variant: 'primary'
+        }
+      ]
+    });
   };
 
   return (
@@ -137,7 +149,11 @@ export default function Layout({ children }: LayoutProps) {
               
               <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-md">
                 <Bell className="h-5 w-5" />
-                <span className="absolute top-1 right-1 block h-2 w-2 rounded-full bg-red-400"></span>
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
+                    {notifications.length > 9 ? '9+' : notifications.length}
+                  </span>
+                )}
               </button>
               
               <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-md">

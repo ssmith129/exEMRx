@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
 import { Loader2 } from 'lucide-react';
 
 interface InteractiveButtonProps {
@@ -33,6 +34,7 @@ export default function InteractiveButton({
   const [isPressed, setIsPressed] = useState(false);
   const [rippleEffect, setRippleEffect] = useState<{ x: number; y: number; id: number } | null>(null);
   const [internalLoading, setInternalLoading] = useState(false);
+  const { addNotification } = useNotifications();
 
   const getVariantClasses = () => {
     switch (variant) {
@@ -117,8 +119,24 @@ export default function InteractiveButton({
       try {
         setInternalLoading(true);
         await onClick();
+        
+        // Show success feedback for important actions
+        if (variant === 'primary' && !loading) {
+          addNotification({
+            type: 'success',
+            title: 'Action Completed',
+            message: 'Your action was completed successfully.',
+            duration: 2000
+          });
+        }
       } catch (error) {
         console.error('Button click error:', error);
+        addNotification({
+          type: 'error',
+          title: 'Action Failed',
+          message: 'There was an error completing your action. Please try again.',
+          duration: 4000
+        });
       } finally {
         setInternalLoading(false);
       }

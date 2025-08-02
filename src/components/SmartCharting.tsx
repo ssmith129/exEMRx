@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
+import { AnimatedButton, FloatingActionButton } from './MicroInteractions';
 import { 
   User, 
   Calendar, 
@@ -27,6 +29,7 @@ export default function SmartCharting() {
   const [showComplianceAudit, setShowComplianceAudit] = useState(false);
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date>(new Date());
+  const { addNotification } = useNotifications();
   const [formData, setFormData] = useState({
     chiefComplaint: 'Routine WIC nutrition assessment and growth monitoring',
     height: '104 cm',
@@ -95,6 +98,13 @@ export default function SmartCharting() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     setLastSaved(new Date());
     setIsAutoSaving(false);
+    
+    addNotification({
+      type: 'success',
+      title: 'Auto-saved',
+      message: 'Your changes have been automatically saved.',
+      duration: 2000
+    });
   };
 
   const handleAcceptSuggestion = (field: string) => {
@@ -105,6 +115,13 @@ export default function SmartCharting() {
       setTimeout(() => {
         setFormSuccess(prev => ({ ...prev, [field]: false }));
       }, 2000);
+      
+      addNotification({
+        type: 'info',
+        title: 'AI Suggestion Applied',
+        message: `AI suggestion has been applied to ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`,
+        duration: 3000
+      });
     }
   };
 
@@ -129,7 +146,24 @@ export default function SmartCharting() {
     if (Object.keys(newErrors).length === 0) {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Visit completed successfully');
+      addNotification({
+        type: 'success',
+        title: 'Visit Completed',
+        message: 'Patient visit has been successfully documented and saved.',
+        persistent: true,
+        actions: [
+          {
+            label: 'View Summary',
+            onClick: () => console.log('View summary'),
+            variant: 'primary'
+          },
+          {
+            label: 'Schedule Follow-up',
+            onClick: () => console.log('Schedule follow-up'),
+            variant: 'secondary'
+          }
+        ]
+      });
     }
   };
 
@@ -335,13 +369,14 @@ export default function SmartCharting() {
               <InteractiveButton variant="secondary" icon={<Save className="h-4 w-4" />}>
                 Save Draft
               </InteractiveButton>
-              <InteractiveButton 
+              <AnimatedButton 
                 variant="primary" 
                 onClick={handleCompleteVisit}
                 icon={<CheckCircle className="h-4 w-4" />}
+                animation="glow"
               >
                 Complete Visit
-              </InteractiveButton>
+              </AnimatedButton>
               </div>
             </div>
           </div>
@@ -367,6 +402,15 @@ export default function SmartCharting() {
       {showComplianceAudit && (
         <ComplianceAudit onClose={() => setShowComplianceAudit(false)} />
       )}
+
+      {/* Floating Action Buttons */}
+      <FloatingActionButton
+        icon={<Save className="h-6 w-6" />}
+        onClick={handleAutoSave}
+        position="bottom-left"
+        tooltip="Quick Save"
+        color="bg-green-600"
+      />
     </div>
   );
 }

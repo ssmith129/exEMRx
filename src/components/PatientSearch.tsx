@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNotifications } from './NotificationSystem';
 import { 
   Search, 
   User, 
@@ -26,6 +27,7 @@ export default function PatientSearch({ onSelectPatient, onClose }: PatientSearc
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  const { addNotification } = useNotifications();
 
   const patients = [
     {
@@ -99,6 +101,16 @@ export default function PatientSearch({ onSelectPatient, onClose }: PatientSearc
       }
     });
   });
+
+  const handleSelectPatient = (patient: any) => {
+    addNotification({
+      type: 'info',
+      title: 'Patient Selected',
+      message: `Selected ${patient.name} (MRN: ${patient.mrn})`,
+      duration: 3000
+    });
+    onSelectPatient(patient);
+  };
 
   const handleFilterToggle = (filter: string) => {
     setSelectedFilters(prev => 
@@ -199,7 +211,7 @@ export default function PatientSearch({ onSelectPatient, onClose }: PatientSearc
                 title={patient.name}
                 subtitle={`MRN: ${patient.mrn} • ${patient.age}`}
                 interactive
-                onClick={() => onSelectPatient(patient)}
+                onClick={() => handleSelectPatient(patient)}
                 className="hover:shadow-md transition-shadow"
                 actions={
                   <div className="flex items-center space-x-2">
