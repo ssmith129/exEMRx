@@ -151,4 +151,4 @@ const NotificationContainer: React.FC = () => {
   );
 };
 
-export default NotificationSystem;
+export default NotificationProvider;
