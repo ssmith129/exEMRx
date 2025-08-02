@@ -15,7 +15,8 @@ import {
   Clock,
   ArrowRight,
   MessageSquare,
-  Settings
+  Settings,
+  Plus
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
