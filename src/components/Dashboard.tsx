@@ -268,20 +268,6 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* CTA Section */}
-      <div className="mb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <GetStartedCTA />
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <ScheduleDemoCTA />
-            <ContactSalesCTA />
-          </div>
-        </div>
-        <div className="mt-6">
-          <UpgradeCTA />
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Recent Activity */}
         <div className="xl:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
