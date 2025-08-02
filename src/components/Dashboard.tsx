@@ -9,7 +9,9 @@ import {
   AlertTriangle,
   CheckCircle,
   Clock,
-  ArrowRight
+  ArrowRight,
+  MessageSquare,
+  Settings
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
