@@ -307,8 +307,57 @@ export default function LandingPage() {
 
                 {/* Form Fields */}
                 <form onSubmit={(e) => { e.preventDefault(); handleAuth(); }} className="space-y-4">
-                  {!isLoginMode && (
-                    <>
+                  {/* Sign In View */}
+                  {isLoginMode ? (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <input
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="sarah.chen@clinic.org"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div className="relative">
+                          <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            value={formData.password}
+                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                            className="w-full pl-10 pr-12 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <label className="flex items-center">
+                          <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                          <span className="ml-2 text-gray-600">Remember me</span>
+                        </label>
+                        <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+                          Forgot password?
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Sign Up View */
+                    <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                         <input
@@ -319,6 +368,7 @@ export default function LandingPage() {
                           placeholder="Dr. Sarah Chen"
                         />
                       </div>
+                      
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Organization</label>
                         <input
@@ -329,69 +379,55 @@ export default function LandingPage() {
                           placeholder="Community Health Center"
                         />
                       </div>
-                    </>
-                  )}
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <input
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                        placeholder="sarah.chen@clinic.org"
-                      />
-                    </div>
-                  </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                    <div className="relative">
-                      <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
-                        className="w-full pl-10 pr-12 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                        placeholder="••••••••"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  {!isLoginMode && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
-                      <div className="relative">
-                        <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          value={formData.confirmPassword}
-                          onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                          className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                          placeholder="••••••••"
-                        />
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <input
+                            type="email"
+                            value={formData.email}
+                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                            className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="sarah.chen@clinic.org"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )}
 
-                  {isLoginMode && (
-                    <div className="flex items-center justify-between text-sm">
-                      <label className="flex items-center">
-                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
-                        <span className="ml-2 text-gray-600">Remember me</span>
-                      </label>
-                      <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
-                        Forgot password?
-                      </a>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <div className="relative">
+                          <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            value={formData.password}
+                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                            className="w-full pl-10 pr-12 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                        <div className="relative">
+                          <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            value={formData.confirmPassword}
+                            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                            className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="••••••••"
+                          />
+                        </div>
+                      </div>
                     </div>
                   )}
 
