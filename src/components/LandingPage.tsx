@@ -376,27 +376,23 @@ export default function LandingPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
                       <div className="relative">
                         <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={formData.fullName}
-                            onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                            className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                            placeholder="Dr. Sarah Chen"
-                          />
-                        </div>
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={formData.confirmPassword}
+                          onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                          className="w-full pl-10 pr-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                          placeholder="••••••••"
+                        />
                       </div>
                     </div>
                   )}
-                        <div className="relative">
-                          <input
-                            type="text"
-                            value={formData.organizationName}
-                            onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
-                            className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                            placeholder="Community Health Center"
-                          />
-                        </div>
+
+                  {isLoginMode && (
+                    <div className="flex items-center justify-between text-sm">
+                      <label className="flex items-center">
+                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <span className="ml-2 text-gray-600">Remember me</span>
+                      </label>
                       <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
                         Forgot password?
                       </a>
