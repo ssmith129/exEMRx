@@ -140,12 +140,12 @@ export default function SmartCharting() {
         actions: [
           {
             label: 'View Summary',
-            onClick: () => console.log('View summary'),
+           onClick: () => window.location.href = '/app/reports',
             variant: 'primary'
           },
           {
             label: 'Schedule Follow-up',
-            onClick: () => console.log('Schedule follow-up'),
+           onClick: () => setShowAppointmentScheduler(true),
             variant: 'secondary'
           }
         ]

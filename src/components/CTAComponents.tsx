@@ -310,12 +310,12 @@ export const UpgradeCTA: React.FC = () => {
       actions: [
         {
           label: 'View Plans',
-          onClick: () => window.location.href = '/pricing',
+         onClick: () => window.open('/pricing', '_blank'),
           variant: 'primary'
         },
         {
           label: 'Learn More',
-          onClick: () => console.log('Learn more'),
+         onClick: () => window.open('/features', '_blank'),
           variant: 'secondary'
         }
       ]

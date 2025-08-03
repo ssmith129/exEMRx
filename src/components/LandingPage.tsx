@@ -103,19 +103,6 @@ export default function LandingPage() {
           }
         ]
       });
-    } else {
-      addNotification({
-        type: 'success',
-        title: 'Account Created!',
-        message: 'Welcome to ezEMRx! Your account has been created successfully.',
-        actions: [
-          {
-            label: 'Start Setup',
-            onClick: () => window.location.href = '/app/dashboard',
-            variant: 'primary'
-          }
-        ]
-      });
     }
   };
 

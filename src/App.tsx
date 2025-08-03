@@ -167,6 +167,9 @@ function App() {
                       <Route path="reports" element={<ReportsAnalytics />} />
                       <Route path="messages" element={<MessageCenter />} />
                       <Route path="settings" element={<Settings />} />
+                     <Route path="compliance" element={<div className="p-6"><h1 className="text-2xl font-bold">Compliance Dashboard</h1><p>Compliance monitoring coming soon...</p></div>} />
+                     <Route path="help" element={<div className="p-6"><h1 className="text-2xl font-bold">Help & Support</h1><p>Documentation and support resources coming soon...</p></div>} />
+                     <Route path="appointments" element={<div className="p-6"><h1 className="text-2xl font-bold">Appointments</h1><p>Appointment scheduling coming soon...</p></div>} />
                       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
                     </Routes>
                   </Layout>
