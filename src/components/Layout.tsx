@@ -66,13 +66,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Dashboard', 
-          href: '/dashboard', 
+         href: '/app/dashboard', 
           icon: Home,
           description: 'Overview and quick actions'
         },
         { 
           name: 'Smart Charting', 
-          href: '/charting', 
+         href: '/app/charting', 
           icon: FileText,
           description: 'AI-enhanced documentation',
           new: true
@@ -86,7 +86,7 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Referrals', 
-          href: '/referrals', 
+         href: '/app/referrals', 
           icon: Users,
           badge: 3,
           badgeColor: 'warning',
@@ -94,7 +94,7 @@ export default function Layout({ children }: LayoutProps) {
         },
         { 
           name: 'Case Notes', 
-          href: '/notes', 
+         href: '/app/notes', 
           icon: MessageSquare,
           description: 'Collaborative documentation'
         }
@@ -107,13 +107,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Reports', 
-          href: '/reports', 
+         href: '/app/reports', 
           icon: BarChart3,
           description: 'Analytics and insights'
         },
         { 
           name: 'Compliance', 
-          href: '/compliance', 
+         href: '/app/compliance', 
           icon: Shield,
           badge: '94%',
           badgeColor: 'success',
@@ -128,7 +128,7 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Messages', 
-          href: '/messages', 
+         href: '/app/messages', 
           icon: Mail,
           badge: 5,
           badgeColor: 'primary',
@@ -143,13 +143,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Settings', 
-          href: '/settings', 
+         href: '/app/settings', 
           icon: Settings,
           description: 'System configuration'
         },
         { 
           name: 'Help & Support', 
-          href: '/help', 
+         href: '/app/help', 
           icon: HelpCircle,
           description: 'Documentation and support'
         }
@@ -299,7 +299,7 @@ export default function Layout({ children }: LayoutProps) {
                   return (
                     <Link
                       key={item.name}
-                      to={`/app${item.href}`}
+                     to={item.href}
                       className={`
                         group relative flex items-center px-4 py-3 text-sm font-medium rounded-xl 
                         transition-all duration-200

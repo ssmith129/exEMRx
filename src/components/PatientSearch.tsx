@@ -104,6 +104,8 @@ export default function PatientSearch({ onSelectPatient, onClose }: PatientSearc
 
   const handleSelectPatient = (patient: any) => {
     onSelectPatient(patient);
+   // Navigate to patient chart using React Router
+   window.location.href = `/app/patient/${patient.id}`;
   };
 
   const handleFilterToggle = (filter: string) => {

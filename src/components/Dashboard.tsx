@@ -135,42 +135,48 @@ export default function Dashboard() {
       description: 'Search and select patient records',
       icon: Users,
       color: 'bg-blue-500',
-      onClick: () => setShowPatientSearch(true)
+     onClick: () => setShowPatientSearch(true),
+     href: null
     },
     {
       title: 'Schedule Appointment',
       description: 'Book new patient appointments',
       icon: Calendar,
       color: 'bg-green-500',
-      onClick: () => setShowAppointmentScheduler(true)
+     onClick: () => setShowAppointmentScheduler(true),
+     href: null
     },
     {
       title: 'Start Charting',
       description: 'Begin new patient documentation',
       icon: ClipboardCheck,
       color: 'bg-primary-500',
-      onClick: () => window.location.href = '/charting'
+     onClick: () => window.location.href = '/app/charting',
+     href: '/app/charting'
     },
     {
       title: 'View Reports',
       description: 'Access analytics and reports',
       icon: TrendingUp,
       color: 'bg-purple-500',
-      onClick: () => window.location.href = '/reports'
+     onClick: () => window.location.href = '/app/reports',
+     href: '/app/reports'
     },
     {
       title: 'Message Center',
       description: 'Secure team communication',
       icon: MessageSquare,
       color: 'bg-yellow-500',
-      onClick: () => window.location.href = '/messages'
+     onClick: () => window.location.href = '/app/messages',
+     href: '/app/messages'
     },
     {
       title: 'System Settings',
       description: 'Configure preferences',
       icon: Settings,
       color: 'bg-gray-500',
-      onClick: () => window.location.href = '/settings'
+     onClick: () => window.location.href = '/app/settings',
+     href: '/app/settings'
     }
   ];
 
@@ -310,7 +316,7 @@ export default function Dashboard() {
             </div>
             <div className="mt-6 pt-4 border-t border-secondary-200/50">
               <Link 
-                to="/charting" 
+               to="/app/charting" 
                 className="text-sm font-medium text-primary-600 hover:text-primary-500"
               >
                 View all activity →
