@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useAlerts, AlertSystem, AlertTemplates } from './AlertSystem';
-import { GetStartedCTA, ScheduleDemoCTA, ContactSalesCTA, UpgradeCTA } from './CTAComponents';
 import { FloatingActionButton } from './MicroInteractions';
 import { useNotifications } from './NotificationSystem';
+import { PatientFlowChart, ComplianceChart, ActivityMetricsChart } from './ChartComponents';
 import PatientSearch from './PatientSearch';
 import AppointmentScheduler from './AppointmentScheduler';
 import { 
@@ -242,6 +242,18 @@ export default function Dashboard() {
           />
         </div>
       )}
+
+      {/* Data Visualization Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold text-secondary-900 mb-6">Analytics Overview</h2>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+          <PatientFlowChart />
+          <ComplianceChart />
+        </div>
+        <div className="grid grid-cols-1 gap-6">
+          <ActivityMetricsChart />
+        </div>
+      </div>
 
       {/* Quick Actions */}
       <div className="mb-8">

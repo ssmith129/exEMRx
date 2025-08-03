@@ -278,6 +278,9 @@ export default function InteractiveInput({
                 type="button"
                 onClick={() => handleOptionSelect(option)}
                 className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-lg last:rounded-b-lg"
+                style={{
+                  animationDelay: `${index * 50}ms`
+                }}
               >
                 {option}
               </button>

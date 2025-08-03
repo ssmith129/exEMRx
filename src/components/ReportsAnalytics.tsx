@@ -17,6 +17,7 @@ import {
 import ResponsiveCard from './ResponsiveCard';
 import InteractiveButton from './InteractiveButton';
 import InteractiveInput from './InteractiveInput';
+import { PatientFlowChart, ComplianceChart, ActivityMetricsChart, GrowthChart } from './ChartComponents';
 
 export default function ReportsAnalytics() {
   const [selectedTimeframe, setSelectedTimeframe] = useState('month');
@@ -81,44 +82,17 @@ export default function ReportsAnalytics() {
 
   const renderOverviewDashboard = () => (
     <div className="space-y-6">
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {overviewStats.map((stat, index) => (
-          <ResponsiveCard key={index} title={stat.label} size="sm">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className={`text-sm font-medium ${getTrendColor(stat.trend)}`}>
-                  {stat.change} from last {selectedTimeframe}
-                </p>
-              </div>
-              <div className={`p-3 rounded-full bg-${stat.color}-100`}>
-                <TrendingUp className={`h-6 w-6 text-${stat.color}-600`} />
-              </div>
-            </div>
-          </ResponsiveCard>
-        ))}
+      {/* Interactive Charts */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+        <PatientFlowChart 
+          timeframe={selectedTimeframe}
+          onTimeframeChange={setSelectedTimeframe}
+        />
+        <ComplianceChart />
       </div>
-
-      {/* Charts */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-        <ResponsiveCard title="Patient Visit Trends">
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <BarChart3 className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-500">Visit trends chart would appear here</p>
-            </div>
-          </div>
-        </ResponsiveCard>
-
-        <ResponsiveCard title="WIC Program Distribution">
-          <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <PieChart className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-500">Program distribution chart would appear here</p>
-            </div>
-          </div>
-        </ResponsiveCard>
+      
+      <div className="grid grid-cols-1 gap-6 mb-6">
+        <ActivityMetricsChart />
       </div>
 
       {/* Recent Activity */}

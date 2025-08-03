@@ -21,6 +21,7 @@ import {
 import ResponsiveCard from './ResponsiveCard';
 import InteractiveButton from './InteractiveButton';
 import InteractiveInput from './InteractiveInput';
+import { GrowthChart } from './ChartComponents';
 
 interface PatientChartProps {
   patientId: string;
@@ -48,11 +49,24 @@ export default function PatientChart({ patientId, onClose }: PatientChartProps) 
   };
 
   const vitals = [
-    { date: '2025-01-15', height: '104 cm', weight: '16.2 kg', temp: '98.6°F', bp: '95/60', hr: '88' },
-    { date: '2024-10-15', height: '102 cm', weight: '15.8 kg', temp: '98.4°F', bp: '92/58', hr: '90' },
-    { date: '2024-07-15', height: '100 cm', weight: '15.2 kg', temp: '98.7°F', bp: '90/55', hr: '92' },
-    { date: '2024-04-15', height: '98 cm', weight: '14.6 kg', temp: '98.5°F', bp: '88/52', hr: '94' }
+    { date: '2025-01-15', height: '104 cm', weight: '16.2 kg', temp: '98.6°F', bp: '95/60', hr: '88', heightValue: 104, weightValue: 16.2 },
+    { date: '2024-10-15', height: '102 cm', weight: '15.8 kg', temp: '98.4°F', bp: '92/58', hr: '90', heightValue: 102, weightValue: 15.8 },
+    { date: '2024-07-15', height: '100 cm', weight: '15.2 kg', temp: '98.7°F', bp: '90/55', hr: '92', heightValue: 100, weightValue: 15.2 },
+    { date: '2024-04-15', height: '98 cm', weight: '14.6 kg', temp: '98.5°F', bp: '88/52', hr: '94', heightValue: 98, weightValue: 14.6 }
   ];
+
+  const growthData = {
+    heightData: vitals.map(v => ({
+      date: v.date,
+      value: v.heightValue,
+      percentile: 50 // Simplified for demo
+    })),
+    weightData: vitals.map(v => ({
+      date: v.date,
+      value: v.weightValue,
+      percentile: 55 // Simplified for demo
+    }))
+  };
 
   const visits = [
     {
@@ -253,14 +267,10 @@ export default function PatientChart({ patientId, onClose }: PatientChartProps) 
                 </InteractiveButton>
               </div>
 
-              <ResponsiveCard title="Growth Chart">
-                <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <TrendingUp className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                    <p className="text-gray-500">Growth chart visualization would appear here</p>
-                  </div>
-                </div>
-              </ResponsiveCard>
+              <GrowthChart 
+                heightData={growthData.heightData}
+                weightData={growthData.weightData}
+              />
 
               <ResponsiveCard title="Vitals History">
                 <div className="overflow-x-auto">
