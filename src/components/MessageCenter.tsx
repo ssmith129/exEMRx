@@ -336,7 +336,7 @@ export default function MessageCenter() {
   );
 
   return (
-    <div className="p-6 max-w-7xl mx-auto h-full">
+    <div className="p-6 h-full">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center justify-between">
