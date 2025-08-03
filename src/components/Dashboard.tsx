@@ -279,9 +279,6 @@ export default function Dashboard() {
           <PatientFlowChart />
           <ComplianceChart />
         </div>
-        <div className="grid grid-cols-1 gap-6">
-          <ActivityMetricsChart />
-        </div>
       </div>
 
       {/* Quick Actions */}
