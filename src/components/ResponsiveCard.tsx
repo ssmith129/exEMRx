@@ -34,13 +34,13 @@ export default function ResponsiveCard({
   const getVariantClasses = () => {
     switch (variant) {
       case 'elevated':
-        return 'bg-white shadow-lg border border-gray-100';
+        return 'bg-white shadow-medium border border-gray-100/50';
       case 'outlined':
-        return 'bg-white border-2 border-gray-200';
+        return 'bg-white border border-secondary-200';
       case 'filled':
-        return 'bg-gray-50 border border-gray-200';
+        return 'bg-secondary-50 border border-secondary-100';
       default:
-        return 'bg-white shadow-sm border border-gray-200';
+        return 'bg-white shadow-soft border border-secondary-100/80';
     }
   };
 
@@ -71,10 +71,10 @@ export default function ResponsiveCard({
   return (
     <div
       className={`
-        rounded-lg transition-all duration-200
+        rounded-xl transition-all duration-300 ease-out
         ${getVariantClasses()}
         ${getSizeClasses()}
-        ${interactive ? 'cursor-pointer hover:shadow-md transform hover:-translate-y-0.5' : ''}
+        ${interactive ? 'cursor-pointer hover:shadow-medium transform hover:-translate-y-1 hover:scale-[1.02]' : ''}
         ${className}
       `}
       onClick={handleCardClick}
@@ -83,13 +83,13 @@ export default function ResponsiveCard({
       <div className="flex items-center justify-between mb-4">
         <div className="flex-1 min-w-0">
           <div className="flex items-center space-x-3">
-            <h3 className="text-lg font-semibold text-gray-900 truncate">
+            <h3 className="text-lg font-semibold text-secondary-900 truncate">
               {title}
             </h3>
             {collapsible && (
               <button
                 onClick={handleToggleExpand}
-                className="p-1 text-gray-400 hover:text-gray-600 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="p-1 text-secondary-400 hover:text-secondary-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500"
                 aria-label={isExpanded ? 'Collapse' : 'Expand'}
               >
                 {isExpanded ? (

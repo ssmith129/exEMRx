@@ -66,20 +66,20 @@ export default function Layout({ children }: LayoutProps) {
 
       {/* Sidebar */}
       <div className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+        fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-strong transform transition-transform duration-300 ease-in-out
         lg:translate-x-0 lg:static lg:inset-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-secondary-200/50">
           <div className="flex items-center">
-            <div className="bg-primary-600 p-2 rounded-lg">
+            <div className="bg-primary-500 p-2 rounded-xl shadow-soft">
               <FileText className="h-6 w-6 text-white" />
             </div>
-            <span className="ml-3 text-xl font-bold text-gray-900">ezEMRx</span>
+            <span className="ml-3 text-xl font-bold text-secondary-900">ezEMRx</span>
           </div>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1 rounded-md text-gray-400 hover:text-gray-600"
+            className="lg:hidden p-1 rounded-lg text-secondary-400 hover:text-secondary-600 transition-colors"
           >
             <X className="h-6 w-6" />
           </button>
@@ -96,8 +96,8 @@ export default function Layout({ children }: LayoutProps) {
                   className={`
                     group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200
                     ${isCurrentPage(item.href)
-                      ? 'bg-primary-50 text-primary-600 border-r-2 border-primary-600'
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                      ? 'bg-primary-50 text-primary-600 border-r-3 border-primary-600'
+                      : 'text-secondary-700 hover:text-primary-600 hover:bg-secondary-50'
                     }
                   `}
                   onClick={() => setSidebarOpen(false)}
@@ -114,14 +114,14 @@ export default function Layout({ children }: LayoutProps) {
         </nav>
 
         {/* User info at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-secondary-200/50">
           <div className="flex items-center">
-            <div className="bg-gray-200 p-2 rounded-full">
-              <User className="h-4 w-4 text-gray-600" />
+            <div className="bg-secondary-200 p-2 rounded-full">
+              <User className="h-4 w-4 text-secondary-600" />
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-900">Dr. Sarah Chen</p>
-              <p className="text-xs text-gray-500">Family Health Clinic</p>
+              <p className="text-sm font-medium text-secondary-900">Dr. Sarah Chen</p>
+              <p className="text-xs text-secondary-500">Family Health Clinic</p>
             </div>
           </div>
         </div>
@@ -130,11 +130,11 @@ export default function Layout({ children }: LayoutProps) {
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top header */}
-        <header className="bg-white shadow-sm border-b border-gray-200">
+        <header className="bg-white shadow-soft border-b border-secondary-100">
           <div className="flex items-center justify-between h-16 px-6">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-50"
+              className="lg:hidden p-2 rounded-lg text-secondary-400 hover:text-secondary-600 hover:bg-secondary-50 transition-colors"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -142,12 +142,12 @@ export default function Layout({ children }: LayoutProps) {
             <div className="flex items-center space-x-4">
               <button 
                 onClick={() => setShowPatientSearch(true)}
-                className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-md"
+                className="relative p-2 text-secondary-400 hover:text-secondary-600 hover:bg-secondary-50 rounded-lg transition-colors"
               >
                 <User className="h-5 w-5" />
               </button>
               
-              <button className="relative p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-md">
+              <button className="relative p-2 text-secondary-400 hover:text-secondary-600 hover:bg-secondary-50 rounded-lg transition-colors">
                 <Bell className="h-5 w-5" />
                 {notifications.length > 0 && (
                   <span className="absolute -top-1 -right-1 flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
@@ -156,7 +156,7 @@ export default function Layout({ children }: LayoutProps) {
                 )}
               </button>
               
-              <button className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-md">
+              <button className="p-2 text-secondary-400 hover:text-secondary-600 hover:bg-secondary-50 rounded-lg transition-colors">
                 <Settings className="h-5 w-5" />
               </button>
             </div>
@@ -164,7 +164,7 @@ export default function Layout({ children }: LayoutProps) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto bg-gray-50">
+        <main className="flex-1 overflow-y-auto bg-secondary-50/30">
           {children}
         </main>
       </div>

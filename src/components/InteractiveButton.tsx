@@ -40,43 +40,43 @@ export default function InteractiveButton({
     switch (variant) {
       case 'primary':
         return `
-          bg-primary-600 text-white border-primary-600
-          hover:bg-primary-700 hover:border-primary-700
-          focus:ring-primary-500 focus:bg-primary-700
-          active:bg-primary-800 active:border-primary-800
-          disabled:bg-primary-300 disabled:border-primary-300
+          bg-primary-500 text-white border-primary-500 shadow-soft
+          hover:bg-primary-600 hover:border-primary-600 hover:shadow-medium
+          focus:ring-primary-500/30 focus:bg-primary-600
+          active:bg-primary-700 active:border-primary-700
+          disabled:bg-secondary-300 disabled:border-secondary-300 disabled:shadow-none
         `;
       case 'secondary':
         return `
-          bg-white text-gray-700 border-gray-300
-          hover:bg-gray-50 hover:border-gray-400
+          bg-white text-secondary-700 border-secondary-200 shadow-soft
+          hover:bg-secondary-50 hover:border-secondary-300 hover:shadow-medium
           focus:ring-primary-500 focus:border-primary-500
-          active:bg-gray-100
-          disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200
+          active:bg-secondary-100
+          disabled:bg-secondary-50 disabled:text-secondary-400 disabled:border-secondary-200 disabled:shadow-none
         `;
       case 'success':
         return `
-          bg-green-600 text-white border-green-600
-          hover:bg-green-700 hover:border-green-700
-          focus:ring-green-500 focus:bg-green-700
-          active:bg-green-800 active:border-green-800
-          disabled:bg-green-300 disabled:border-green-300
+          bg-success-500 text-white border-success-500 shadow-soft
+          hover:bg-success-600 hover:border-success-600 hover:shadow-medium
+          focus:ring-success-500/30 focus:bg-success-600
+          active:bg-success-700 active:border-success-700
+          disabled:bg-success-300 disabled:border-success-300 disabled:shadow-none
         `;
       case 'danger':
         return `
           bg-red-600 text-white border-red-600
-          hover:bg-red-700 hover:border-red-700
-          focus:ring-red-500 focus:bg-red-700
+          hover:bg-red-700 hover:border-red-700 hover:shadow-medium
+          focus:ring-red-500/30 focus:bg-red-700
           active:bg-red-800 active:border-red-800
-          disabled:bg-red-300 disabled:border-red-300
+          disabled:bg-red-300 disabled:border-red-300 disabled:shadow-none
         `;
       case 'ghost':
         return `
-          bg-transparent text-gray-700 border-transparent
-          hover:bg-gray-100
-          focus:ring-primary-500 focus:bg-gray-100
-          active:bg-gray-200
-          disabled:text-gray-400
+          bg-transparent text-secondary-700 border-transparent
+          hover:bg-secondary-100
+          focus:ring-primary-500/30 focus:bg-secondary-100
+          active:bg-secondary-200
+          disabled:text-secondary-400
         `;
       default:
         return '';
@@ -153,14 +153,14 @@ export default function InteractiveButton({
       disabled={isDisabled}
       className={`
         relative overflow-hidden inline-flex items-center justify-center
-        font-medium border rounded-lg transition-all duration-200
-        focus:outline-none focus:ring-2 focus:ring-offset-2
+        font-medium border rounded-xl transition-all duration-300 ease-out
+        focus:outline-none focus:ring-4 focus:ring-offset-0
         disabled:cursor-not-allowed
         transform-gpu
         ${getVariantClasses()}
         ${getSizeClasses()}
         ${fullWidth ? 'w-full' : ''}
-        ${isPressed ? 'scale-95' : 'scale-100'}
+        ${isPressed ? 'scale-[0.98]' : 'scale-100'}
         ${className}
       `}
     >
