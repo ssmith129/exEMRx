@@ -170,7 +170,7 @@ export default function LandingPage() {
 
       {/* Header */}
       <header className="relative z-30 bg-white/80 backdrop-blur-lg border-b border-gray-200/50">
-        <div className="px-6 py-4">
+        <div className="px-6 md:px-8 lg:px-12 xl:px-16 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
@@ -204,7 +204,7 @@ export default function LandingPage() {
 
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden mt-4 py-4 border-t border-gray-200/50">
+            <div className="md:hidden mt-4 py-4 border-t border-gray-200/50 px-2">
               <nav className="flex flex-col space-y-4">
                 <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Features</a>
                 <a href="#security" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">Security</a>
