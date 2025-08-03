@@ -38,7 +38,7 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: 'john.doe@emrx.com',
-    password: '',
+    password: '12345678',
     confirmPassword: '',
     organizationName: '',
     fullName: ''
