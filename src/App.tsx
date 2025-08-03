@@ -12,6 +12,11 @@ import Settings from './components/Settings';
 import MessageCenter from './components/MessageCenter';
 import Layout from './components/Layout';
 
+// Root Route Component - redirects to dashboard
+const RootRoute: React.FC = () => {
+  return <Navigate to="/app/dashboard" replace />;
+};
+
 // Authentication context for managing login state
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -28,42 +33,6 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within AuthProvider');
   }
   return context;
-};
-
-// Root Route Component - redirects based on auth status
-const RootRoute: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Check for existing authentication
-    const authStatus = localStorage.getItem('ezEMRx_authenticated');
-    const userData = localStorage.getItem('ezEMRx_user');
-    
-    if (authStatus === 'true' && userData) {
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading ezEMRx...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // If authenticated, redirect to dashboard
-  if (isAuthenticated) {
-    return <Navigate to="/app/dashboard" replace />;
-  }
-
-  // If not authenticated, show landing page
-  return <LandingPage />;
 };
 
 // Protected Route Component
@@ -93,7 +62,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
-  return isAuthenticated ? <>{children}</> : <Navigate to="/" replace />;
+  return isAuthenticated ? <>{children}</> : <LandingPage />;
 };
 
 // Authentication Provider Component
