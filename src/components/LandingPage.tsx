@@ -219,7 +219,7 @@ export default function LandingPage() {
               <div>
                 <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                   Healthcare
-                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block leading-tight py-1">
                     Reimagined
                   </span>
                 </h2>
