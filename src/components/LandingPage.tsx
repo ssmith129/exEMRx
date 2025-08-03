@@ -324,6 +324,8 @@ export default function LandingPage() {
                         </div>
                           />
                         </div>
+                          />
+                        </div>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Organization</label>
@@ -334,6 +336,8 @@ export default function LandingPage() {
                             onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
                             className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
                             placeholder="Community Health Center"
+                          />
+                        </div>
                           />
                         </div>
                           />
