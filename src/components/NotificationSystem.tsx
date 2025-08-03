@@ -72,7 +72,6 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ 
       clearAll
     }}>
       {children}
-      <NotificationContainer />
     </NotificationContext.Provider>
   );
 };
