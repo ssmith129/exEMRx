@@ -163,39 +163,49 @@ export default function MessageCenter() {
       <div className="flex flex-col h-full">
         {/* Message Header */}
         <div className="border-b border-gray-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <div className="bg-primary-100 p-2 rounded-full">
-                <User className="h-5 w-5 text-primary-600" />
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3">
+              <div className="bg-primary-100 p-3 rounded-full flex-shrink-0">
+                <User className="h-6 w-6 text-primary-600" />
               </div>
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900">{selectedMessageData.subject}</h2>
-                <p className="text-sm text-gray-600">From: {selectedMessageData.from}</p>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl font-bold text-gray-900 mb-2">{selectedMessageData.subject}</h2>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-gray-700">From: {selectedMessageData.from}</p>
+                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                    <div className="flex items-center space-x-1">
+                      <Clock className="h-4 w-4" />
+                      <span>{selectedMessageData.time}</span>
+                    </div>
+                    {selectedMessageData.attachments > 0 && (
+                      <div className="flex items-center space-x-1">
+                        <Paperclip className="h-4 w-4" />
+                        <span>{selectedMessageData.attachments} attachment{selectedMessageData.attachments !== 1 ? 's' : ''}</span>
+                      </div>
+                    )}
+                    <div className={`flex items-center space-x-1 ${getPriorityColor(selectedMessageData.priority)}`}>
+                      <Flag className="h-4 w-4" />
+                      <span className="capitalize">{selectedMessageData.priority} priority</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <InteractiveButton variant="ghost" size="sm" icon={<Reply className="h-4 w-4" />} />
-              <InteractiveButton variant="ghost" size="sm" icon={<Forward className="h-4 w-4" />} />
-              <InteractiveButton variant="ghost" size="sm" icon={<Star className="h-4 w-4" />} />
-              <InteractiveButton variant="ghost" size="sm" icon={<Archive className="h-4 w-4" />} />
-              <InteractiveButton variant="ghost" size="sm" icon={<Trash2 className="h-4 w-4" />} />
-              <InteractiveButton variant="ghost" size="sm" icon={<MoreVertical className="h-4 w-4" />} />
-            </div>
-          </div>
-          <div className="flex items-center space-x-4 text-sm text-gray-500">
-            <div className="flex items-center space-x-1">
-              <Clock className="h-4 w-4" />
-              <span>{selectedMessageData.time}</span>
-            </div>
-            {selectedMessageData.attachments > 0 && (
-              <div className="flex items-center space-x-1">
-                <Paperclip className="h-4 w-4" />
-                <span>{selectedMessageData.attachments} attachment{selectedMessageData.attachments !== 1 ? 's' : ''}</span>
+            <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+              <div className="flex items-center space-x-2">
+                <InteractiveButton variant="ghost" size="sm" icon={<Reply className="h-4 w-4" />}>
+                  Reply
+                </InteractiveButton>
+                <InteractiveButton variant="ghost" size="sm" icon={<Forward className="h-4 w-4" />}>
+                  Forward
+                </InteractiveButton>
               </div>
-            )}
-            <div className={`flex items-center space-x-1 ${getPriorityColor(selectedMessageData.priority)}`}>
-              <Flag className="h-4 w-4" />
-              <span className="capitalize">{selectedMessageData.priority} priority</span>
+              <div className="flex items-center space-x-2">
+                <InteractiveButton variant="ghost" size="sm" icon={<Star className="h-4 w-4" />} />
+                <InteractiveButton variant="ghost" size="sm" icon={<Archive className="h-4 w-4" />} />
+                <InteractiveButton variant="ghost" size="sm" icon={<Trash2 className="h-4 w-4" />} />
+                <InteractiveButton variant="ghost" size="sm" icon={<MoreVertical className="h-4 w-4" />} />
+              </div>
             </div>
           </div>
         </div>
