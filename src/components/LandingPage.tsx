@@ -311,23 +311,27 @@ export default function LandingPage() {
                     <>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                        <input
-                          type="text"
-                          value={formData.fullName}
-                          onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                          className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                          placeholder="Dr. Sarah Chen"
-                        />
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={formData.fullName}
+                            onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                            className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="Dr. Sarah Chen"
+                          />
+                        </div>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Organization</label>
-                        <input
-                          type="text"
-                          value={formData.organizationName}
-                          onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
-                          className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
-                          placeholder="Community Health Center"
-                        />
+                        <div className="relative">
+                          <input
+                            type="text"
+                            value={formData.organizationName}
+                            onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
+                            className="w-full px-4 py-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors leading-relaxed"
+                            placeholder="Community Health Center"
+                          />
+                        </div>
                       </div>
                     </>
                   )}
