@@ -36,6 +36,8 @@ export default function LandingPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Permanent autopopulated form data - these values persist across page loads and form toggles
   const [formData, setFormData] = useState({
     email: 'john.doe@emrx.com',
     password: '12345678',
@@ -44,6 +46,19 @@ export default function LandingPage() {
     fullName: ''
   });
   const { addNotification } = useNotifications();
+
+  // Ensure form values remain populated when switching between login/signup modes
+  useEffect(() => {
+    // Reset form but preserve permanent demo credentials
+    setFormData(prevData => ({
+      ...prevData,
+      email: 'john.doe@emrx.com',
+      password: '12345678',
+      confirmPassword: '',
+      organizationName: '',
+      fullName: ''
+    }));
+  }, [isLoginMode]);
 
   // Animated counter effect
   const [counters, setCounters] = useState({
