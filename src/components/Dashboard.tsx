@@ -358,7 +358,7 @@ export default function Dashboard() {
             </div>
             <div className="mt-6 pt-4 border-t border-secondary-200/50">
               <Link 
-               to="/app/charting" 
+               to="/app/reports"
                 className="text-sm font-medium text-primary-600 hover:text-primary-500"
               >
                 View all activity →
