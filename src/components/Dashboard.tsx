@@ -243,7 +243,7 @@ export default function Dashboard() {
               <div className="flex items-center space-x-2">
                 {alerts.filter(a => a.priority === 'high' || a.priority === 'critical').length > 0 && (
                   <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                    {Math.min(alerts.filter(a => a.priority === 'high' || a.priority === 'critical').length, 4)} High Priority
+                    {alerts.filter(a => a.priority === 'high' || a.priority === 'critical').length} High Priority
                   </span>
                 )}
                 <ChevronDown 
@@ -261,7 +261,7 @@ export default function Dashboard() {
               <div className="px-6 pb-6 border-t border-gray-100">
                 <div className="pt-4">
                   <AlertSystem
-                    alerts={alerts.slice(0, 4)}
+                    alerts={alerts}
                     onDismiss={dismissAlert}
                     onAction={handleAction}
                   />
