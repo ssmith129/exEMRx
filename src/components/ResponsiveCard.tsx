@@ -101,7 +101,7 @@ export default function ResponsiveCard({
             )}
           </div>
           {subtitle && (
-            <p className="text-sm text-gray-600 mt-1 truncate">
+            <p className="text-sm text-gray-600 mt-2 leading-relaxed">
               {subtitle}
             </p>
           )}

@@ -8,12 +8,28 @@
 @layer base {
   html {
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    line-height: 1.6;
   }
   
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+  }
+
+  /* Ensure proper spacing for text with descenders */
+  input, textarea, button {
+    line-height: 1.5;
+  }
+
+  /* Fix truncation issues in form elements */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="password"], 
+  textarea {
+    padding-bottom: 1rem;
+    padding-top: 1rem;
   }
 }
 
@@ -56,5 +72,23 @@
   /* Improved shadow system */
   .shadow-strong {
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Fix text truncation in containers */
+  .text-container {
+    min-height: calc(1em * 1.6 + 0.5rem);
+    padding-bottom: 0.25rem;
+  }
+
+  /* Ensure proper line spacing */
+  .line-height-relaxed {
+    line-height: 1.75;
+  }
+
+  /* Fix button text truncation */
+  button {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    line-height: 1.4;
   }
 }

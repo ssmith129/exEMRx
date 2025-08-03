@@ -86,13 +86,13 @@ export default function InteractiveButton({
   const getSizeClasses = () => {
     switch (size) {
       case 'sm':
-        return 'px-3 py-2 text-sm';
+        return 'px-3 py-3 text-sm leading-none';
       case 'md':
-        return 'px-4 py-3 text-sm';
+        return 'px-4 py-4 text-sm leading-relaxed';
       case 'lg':
-        return 'px-6 py-4 text-base';
+        return 'px-6 py-5 text-base leading-relaxed';
       default:
-        return 'px-4 py-3 text-sm';
+        return 'px-4 py-4 text-sm leading-relaxed';
     }
   };
 

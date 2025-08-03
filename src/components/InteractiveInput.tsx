@@ -110,7 +110,7 @@ export default function InteractiveInput({
 
   const getInputClasses = () => {
     let classes = `
-      block w-full px-4 py-3 border rounded-lg text-sm transition-all duration-200
+      block w-full px-4 py-4 border rounded-lg text-sm transition-all duration-200 leading-relaxed
       placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500
       focus:border-primary-500 disabled:bg-gray-50 disabled:text-gray-500
       disabled:cursor-not-allowed
@@ -158,7 +158,7 @@ export default function InteractiveInput({
           <textarea
             {...commonProps}
             rows={rows}
-            className={`${commonProps.className} resize-none`}
+            className={`${commonProps.className} resize-none leading-relaxed py-4`}
           />
         );
 
