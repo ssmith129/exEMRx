@@ -103,12 +103,6 @@ export default function PatientSearch({ onSelectPatient, onClose }: PatientSearc
   });
 
   const handleSelectPatient = (patient: any) => {
-    addNotification({
-      type: 'info',
-      title: 'Patient Selected',
-      message: `Selected ${patient.name} (MRN: ${patient.mrn})`,
-      duration: 3000
-    });
     onSelectPatient(patient);
   };
 

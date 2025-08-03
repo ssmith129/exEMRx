@@ -139,28 +139,6 @@ export default function ReferralForm() {
       setCreatedReferral(referral);
       setShowReferralSuccess(true);
       
-      addNotification({
-        type: 'success',
-        title: 'Referral Created Successfully',
-        message: `Referral to ${referral.provider?.provider} has been sent.`,
-        actions: [
-          {
-            label: 'View Referral',
-            onClick: () => console.log('View referral'),
-            variant: 'primary'
-          },
-          {
-            label: 'Create Another',
-            onClick: () => {
-              setSelectedProvider(null);
-              setReferralReason('');
-              setPriorityLevel('Routine');
-            },
-            variant: 'secondary'
-          }
-        ]
-      });
-      
       // Reset form after showing success
       setSelectedProvider(null);
       setReferralReason('');

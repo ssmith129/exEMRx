@@ -113,28 +113,9 @@ export default function AppointmentScheduler({ patient, onClose, onSchedule }: A
       await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
       onSchedule(appointment);
       
-      addNotification({
-        type: 'success',
-        title: 'Appointment Scheduled',
-        message: `Appointment scheduled for ${appointment.patient} on ${appointment.date} at ${appointment.time}`,
-        actions: [
-          {
-            label: 'View Calendar',
-            onClick: () => console.log('View calendar'),
-            variant: 'primary'
-          }
-        ]
-      });
-      
       onClose();
     } catch (error) {
       console.error('Failed to schedule appointment:', error);
-      addNotification({
-        type: 'error',
-        title: 'Scheduling Failed',
-        message: 'Unable to schedule appointment. Please try again.',
-        duration: 5000
-      });
     }
   };
 

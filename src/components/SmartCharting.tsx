@@ -98,13 +98,6 @@ export default function SmartCharting() {
     await new Promise(resolve => setTimeout(resolve, 1000));
     setLastSaved(new Date());
     setIsAutoSaving(false);
-    
-    addNotification({
-      type: 'success',
-      title: 'Auto-saved',
-      message: 'Your changes have been automatically saved.',
-      duration: 2000
-    });
   };
 
   const handleAcceptSuggestion = (field: string) => {
@@ -115,13 +108,6 @@ export default function SmartCharting() {
       setTimeout(() => {
         setFormSuccess(prev => ({ ...prev, [field]: false }));
       }, 2000);
-      
-      addNotification({
-        type: 'info',
-        title: 'AI Suggestion Applied',
-        message: `AI suggestion has been applied to ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}.`,
-        duration: 3000
-      });
     }
   };
 

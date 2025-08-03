@@ -82,13 +82,6 @@ export default function Settings() {
     setSavedSettings([...savedSettings, section]);
     setIsSaving(false);
     
-    addNotification({
-      type: 'success',
-      title: 'Settings Saved',
-      message: `Your ${section} settings have been updated successfully.`,
-      duration: 3000
-    });
-    
     // Remove success indicator after 3 seconds
     setTimeout(() => {
       setSavedSettings(savedSettings.filter(s => s !== section));

@@ -127,18 +127,6 @@ export default function Dashboard() {
   const handleScheduleAppointment = (appointment: any) => {
     console.log('Scheduled appointment:', appointment);
     // Add appointment to calendar/database
-    addNotification({
-      type: 'success',
-      title: 'Appointment Scheduled',
-      message: `Appointment scheduled for ${appointment.patient} on ${appointment.date}`,
-      actions: [
-        {
-          label: 'View Calendar',
-          onClick: () => console.log('View calendar'),
-          variant: 'primary'
-        }
-      ]
-    });
   };
 
   const quickActions = [
@@ -187,12 +175,6 @@ export default function Dashboard() {
   ];
 
   const handleQuickAction = (action: any) => {
-    addNotification({
-      type: 'info',
-      title: `${action.title} Selected`,
-      message: action.description,
-      duration: 3000
-    });
     action.onClick();
   };
 
