@@ -51,12 +51,14 @@ interface NavigationItem {
 export default function Layout({ children }: LayoutProps) {
   const auth = useAuth();
   const navigate = useNavigate();
+  const { addNotification } = useNotifications();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['core', 'communication']);
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const location = useLocation();
-  const { addNotification, notifications } = useNotifications();
+  const { notifications } = useNotifications();
 
   // Navigation structure with logical grouping
   const navigationGroups: NavigationGroup[] = [
@@ -205,6 +207,96 @@ export default function Layout({ children }: LayoutProps) {
       case 'warning': return 'bg-yellow-500 text-white';
       case 'error': return 'bg-red-500 text-white';
       default: return 'bg-gray-500 text-white';
+    }
+  };
+
+  /**
+   * Enhanced sign-out handler with proper error handling and redirect
+   * Handles the complete sign-out process:
+   * 1. Shows loading state
+   * 2. Clears authentication data
+   * 3. Handles any errors
+   * 4. Redirects to landing page only after successful sign-out
+   */
+  const handleSignOut = async () => {
+    if (isSigningOut) return; // Prevent double-clicks
+    
+    try {
+      setIsSigningOut(true);
+      setUserMenuOpen(false); // Close the dropdown immediately
+      
+      // Show immediate feedback to user
+      addNotification({
+        type: 'info',
+        title: 'Signing Out',
+        message: 'Please wait while we sign you out...',
+        duration: 2000
+      });
+      
+      // Simulate any async cleanup operations (API calls, etc.)
+      // In a real app, this might include:
+      // - Invalidating tokens on the server
+      // - Clearing cached data
+      // - Logging the sign-out event
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Clear authentication state and storage
+      if (auth?.logout) {
+        auth.logout();
+      }
+      
+      // Additional cleanup - clear any app-specific data
+      // Clear any cached user preferences
+      localStorage.removeItem('ezEMRx_preferences');
+      localStorage.removeItem('ezEMRx_drafts');
+      
+      // Clear session storage if used
+      sessionStorage.clear();
+      
+      // Success notification
+      addNotification({
+        type: 'success',
+        title: 'Signed Out Successfully',
+        message: 'You have been safely signed out of ezEMRx.',
+        duration: 3000
+      });
+      
+      // Small delay to let the user see the success message
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Redirect to landing page (sign-in)
+      // Using navigate with replace to prevent going back to authenticated pages
+      navigate('/', { replace: true });
+      
+    } catch (error) {
+      console.error('Sign-out error:', error);
+      
+      // Handle sign-out errors gracefully
+      addNotification({
+        type: 'error',
+        title: 'Sign-Out Error',
+        message: 'There was an issue signing you out. Please try again.',
+        persistent: true,
+        actions: [
+          {
+            label: 'Retry',
+            onClick: () => handleSignOut(),
+            variant: 'primary'
+          },
+          {
+            label: 'Force Logout',
+            onClick: () => {
+              // Force logout in case of persistent errors
+              if (auth?.logout) auth.logout();
+              navigate('/', { replace: true });
+            },
+            variant: 'secondary'
+          }
+        ]
+      });
+      
+    } finally {
+      setIsSigningOut(false);
     }
   };
 
@@ -419,11 +511,16 @@ export default function Layout({ children }: LayoutProps) {
                 </button>
                 <hr className="my-2 mx-4" />
                 <button 
-                  onClick={() => auth?.logout()}
-                  className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 text-red-600 transition-colors"
+                  onClick={handleSignOut}
+                  disabled={isSigningOut}
+                  className={`
+                    w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 
+                    text-red-600 transition-colors
+                    ${isSigningOut ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sign Out</span>
+                  <LogOut className={`h-4 w-4 ${isSigningOut ? 'animate-spin' : ''}`} />
+                  <span>{isSigningOut ? 'Signing Out...' : 'Sign Out'}</span>
                 </button>
               </div>
             )}
