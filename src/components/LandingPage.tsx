@@ -29,8 +29,10 @@ import {
 } from 'lucide-react';
 import InteractiveButton from './InteractiveButton';
 import { AnimatedButton } from './MicroInteractions';
+import { useAuth } from '../App';
 
 export default function LandingPage() {
+  const auth = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -76,6 +78,18 @@ export default function LandingPage() {
   }, []);
 
   const handleAuth = () => {
+    // Authenticate the user
+    const success = auth?.login({
+      email: formData.email,
+      password: formData.password
+    });
+    
+    if (success) {
+      // Redirect to dashboard immediately
+      window.location.href = '/app/dashboard';
+      return;
+    }
+    
     if (isLoginMode) {
       addNotification({
         type: 'success',
@@ -84,7 +98,7 @@ export default function LandingPage() {
         actions: [
           {
             label: 'Go to Dashboard',
-            onClick: () => window.location.href = '/dashboard',
+            onClick: () => window.location.href = '/app/dashboard',
             variant: 'primary'
           }
         ]
@@ -97,7 +111,7 @@ export default function LandingPage() {
         actions: [
           {
             label: 'Start Setup',
-            onClick: () => window.location.href = '/dashboard',
+            onClick: () => window.location.href = '/app/dashboard',
             variant: 'primary'
           }
         ]
