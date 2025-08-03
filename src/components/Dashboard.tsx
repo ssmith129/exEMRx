@@ -16,7 +16,8 @@ import {
   ArrowRight,
   MessageSquare,
   Settings,
-  Plus
+  Plus,
+  ChevronDown
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -25,6 +26,7 @@ export default function Dashboard() {
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const [showAppointmentScheduler, setShowAppointmentScheduler] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [alertsExpanded, setAlertsExpanded] = useState(false);
   const { alerts, addAlert, dismissAlert, handleAction } = useAlerts();
   const { addNotification } = useNotifications();
 
@@ -222,12 +224,51 @@ export default function Dashboard() {
       {/* Alerts Section */}
       {alerts.length > 0 && (
         <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">System Alerts</h2>
-          <AlertSystem
-            alerts={alerts}
-            onDismiss={dismissAlert}
-            onAction={handleAction}
-          />
+          <div className="bg-white rounded-xl shadow-soft border border-gray-200">
+            <button
+              onClick={() => setAlertsExpanded(!alertsExpanded)}
+              className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors duration-200 rounded-xl"
+            >
+              <div className="flex items-center space-x-4">
+                <div className="bg-red-100 p-2 rounded-lg">
+                  <AlertTriangle className="h-5 w-5 text-red-600" />
+                </div>
+                <div className="text-left">
+                  <h2 className="text-xl font-semibold text-gray-900">System Alerts</h2>
+                  <p className="text-sm text-gray-600">
+                    {alerts.length} active alert{alerts.length !== 1 ? 's' : ''} requiring attention
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-2">
+                {alerts.filter(a => a.priority === 'high' || a.priority === 'critical').length > 0 && (
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                    {alerts.filter(a => a.priority === 'high' || a.priority === 'critical').length} High Priority
+                  </span>
+                )}
+                <ChevronDown 
+                  className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${
+                    alertsExpanded ? 'rotate-180' : ''
+                  }`} 
+                />
+              </div>
+            </button>
+            
+            <div className={`
+              transition-all duration-300 ease-in-out overflow-hidden
+              ${alertsExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}
+            `}>
+              <div className="px-6 pb-6 border-t border-gray-100">
+                <div className="pt-4">
+                  <AlertSystem
+                    alerts={alerts}
+                    onDismiss={dismissAlert}
+                    onAction={handleAction}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
