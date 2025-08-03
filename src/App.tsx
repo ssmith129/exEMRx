@@ -116,7 +116,8 @@ function App() {
           <div className="min-h-screen bg-gray-50">
             <Routes>
               {/* Landing/Login Page - Primary Entry Point */}
-              <Route path="/" element={<LandingPage />} />
+              <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
+              <Route path="/login" element={<LandingPage />} />
               
               {/* Protected App Routes - Wrapped in Layout */}
               <Route path="/app/*" element={
