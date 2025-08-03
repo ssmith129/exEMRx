@@ -172,7 +172,7 @@ export default function SmartCharting() {
     <div className="flex h-full bg-gray-50">
       {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${showAIPanel ? 'mr-96' : ''}`}>
-        <div className="p-6">
+        <div className="p-6 max-w-6xl mx-auto">
           {/* Patient Header */}
           <ResponsiveCard
             title={patientInfo.name}
