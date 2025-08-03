@@ -218,7 +218,7 @@ export default function LandingPage() {
 
       {/* Main Hero Section */}
       <main className="relative z-20">
-        <div className="px-6 py-16">
+        <div className="px-6 py-16 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* Left Column - Hero Content */}
@@ -482,7 +482,7 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <section className="relative z-20 py-20 bg-white/50 backdrop-blur-sm">
-        <div className="px-6">
+        <div className="px-6 max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Why Healthcare Professionals Choose ezEMRx
@@ -508,7 +508,7 @@ export default function LandingPage() {
 
       {/* Social Proof Section */}
       <section className="relative z-20 py-20">
-        <div className="px-6">
+        <div className="px-6 max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Trusted by Healthcare Heroes
