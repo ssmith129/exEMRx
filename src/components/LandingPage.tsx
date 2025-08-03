@@ -170,7 +170,7 @@ export default function LandingPage() {
 
       {/* Header */}
       <header className="relative z-30 bg-white/80 backdrop-blur-lg border-b border-gray-200/50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
@@ -218,7 +218,7 @@ export default function LandingPage() {
 
       {/* Main Hero Section */}
       <main className="relative z-20">
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             
             {/* Left Column - Hero Content */}
@@ -482,7 +482,7 @@ export default function LandingPage() {
 
       {/* Features Section */}
       <section className="relative z-20 py-20 bg-white/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Why Healthcare Professionals Choose ezEMRx
@@ -508,7 +508,7 @@ export default function LandingPage() {
 
       {/* Social Proof Section */}
       <section className="relative z-20 py-20">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Trusted by Healthcare Heroes
@@ -518,7 +518,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200/50 shadow-lg min-h-[240px]">
                 <div className="flex items-center space-x-1 mb-4">
@@ -547,7 +547,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="relative z-20 bg-gray-900 text-white py-16">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="px-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Brand */}
             <div className="space-y-4">
