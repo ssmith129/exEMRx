@@ -76,8 +76,33 @@ export default function LandingPage() {
   }, []);
 
   const handleAuth = () => {
-    // Direct redirect to dashboard
-    window.location.href = '/app/dashboard';
+    if (isLoginMode) {
+      addNotification({
+        type: 'success',
+        title: 'Welcome Back!',
+        message: 'Successfully logged into ezEMRx platform.',
+        actions: [
+          {
+            label: 'Go to Dashboard',
+            onClick: () => window.location.href = '/dashboard',
+            variant: 'primary'
+          }
+        ]
+      });
+    } else {
+      addNotification({
+        type: 'success',
+        title: 'Account Created!',
+        message: 'Welcome to ezEMRx! Your account has been created successfully.',
+        actions: [
+          {
+            label: 'Start Setup',
+            onClick: () => window.location.href = '/dashboard',
+            variant: 'primary'
+          }
+        ]
+      });
+    }
   };
 
   const keyFeatures = [
