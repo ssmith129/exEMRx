@@ -441,7 +441,9 @@ export default function Layout({ children }: LayoutProps) {
               
               {/* Breadcrumb */}
               <nav className="hidden md:flex items-center space-x-2 text-sm">
-                <span className="text-gray-500">ezEMRx</span>
+                <Link to="/dashboard" className="text-gray-500 hover:text-primary-600 transition-colors cursor-pointer">
+                  ezEMRx
+                </Link>
                 <ChevronRight className="h-4 w-4 text-gray-300" />
                 <span className="text-gray-900 font-medium">
                   {navigationGroups
