@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../App';
 import { useNotifications } from './NotificationSystem';
 import PatientSearch from './PatientSearch';
 import { 
@@ -48,6 +49,7 @@ interface NavigationItem {
 }
 
 export default function Layout({ children }: LayoutProps) {
+  const auth = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['core', 'communication']);
   const [showPatientSearch, setShowPatientSearch] = useState(false);
@@ -297,7 +299,7 @@ export default function Layout({ children }: LayoutProps) {
                   return (
                     <Link
                       key={item.name}
-                      to={item.href}
+                      to={`/app${item.href}`}
                       className={`
                         group relative flex items-center px-4 py-3 text-sm font-medium rounded-xl 
                         transition-all duration-200
@@ -389,9 +391,9 @@ export default function Layout({ children }: LayoutProps) {
               
                 <>
                   <div className="flex-1 text-left">
-                    <p className="text-sm font-medium text-gray-900">Dr. Sarah Chen</p>
+                    <p className="text-sm font-medium text-gray-900">{auth?.user?.name || 'User'}</p>
                     <div className="flex items-center space-x-2 mt-1">
-                      <p className="text-xs text-gray-500 leading-none">Family Health Clinic</p>
+                      <p className="text-xs text-gray-500 leading-none">{auth?.user?.role || 'Healthcare Professional'}</p>
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
                         Online
                       </span>
@@ -415,7 +417,10 @@ export default function Layout({ children }: LayoutProps) {
                   <span>Preferences</span>
                 </button>
                 <hr className="my-2 mx-4" />
-                <button className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 text-red-600 transition-colors">
+                <button 
+                  onClick={() => auth?.logout()}
+                  className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 text-red-600 transition-colors"
+                >
                   <LogOut className="h-4 w-4" />
                   <span>Sign Out</span>
                 </button>
@@ -441,14 +446,14 @@ export default function Layout({ children }: LayoutProps) {
               
               {/* Breadcrumb */}
               <nav className="hidden md:flex items-center space-x-2 text-sm">
-                <Link to="/dashboard" className="text-gray-500 hover:text-primary-600 transition-colors cursor-pointer">
+                <Link to="/app/dashboard" className="text-gray-500 hover:text-primary-600 transition-colors cursor-pointer">
                   ezEMRx
                 </Link>
                 <ChevronRight className="h-4 w-4 text-gray-300" />
                 <span className="text-gray-900 font-medium">
                   {navigationGroups
                     .flatMap(g => g.items)
-                    .find(item => isCurrentPage(item.href))?.name || 'Dashboard'}
+                    .find(item => isCurrentPage(`/app${item.href}`))?.name || 'Dashboard'}
                 </span>
               </nav>
             </div>

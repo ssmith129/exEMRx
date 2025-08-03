@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useNotifications } from './NotificationSystem';
+import { useAuth } from '../App';
 import { 
   FileText,
   Sparkles, 
@@ -34,6 +36,8 @@ export default function LandingPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -42,6 +46,15 @@ export default function LandingPage() {
     fullName: ''
   });
   const { addNotification } = useNotifications();
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (auth?.isAuthenticated) {
+      navigate('/app/dashboard', { replace: true });
+    }
+  }, [auth?.isAuthenticated, navigate]);
 
   // Animated counter effect
   const [counters, setCounters] = useState({
@@ -75,34 +88,138 @@ export default function LandingPage() {
     return () => intervals.forEach(clearInterval);
   }, []);
 
-  const handleAuth = () => {
+  const validateForm = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+
+    if (!isLoginMode) {
+      if (!formData.fullName) {
+        newErrors.fullName = 'Full name is required';
+      }
+      if (!formData.organizationName) {
+        newErrors.organizationName = 'Organization name is required';
+      }
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+      }
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleAuth = async () => {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setErrors({});
+
+    try {
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      if (isLoginMode) {
+        // Handle Login
+        const success = auth?.login({ email: formData.email, password: formData.password });
+        
+        if (success) {
+          addNotification({
+            type: 'success',
+            title: 'Welcome Back!',
+            message: 'Successfully logged into ezEMRx platform.',
+            duration: 3000
+          });
+          navigate('/app/dashboard', { replace: true });
+        } else {
+          setErrors({ general: 'Invalid email or password. Please try again.' });
+        }
+      } else {
+        // Handle Sign Up
+        addNotification({
+          type: 'success',
+          title: 'Account Created!',
+          message: 'Welcome to ezEMRx! Your account has been created successfully.',
+          duration: 3000
+        });
+        
+        // Auto-login after successful registration
+        const success = auth?.login({ email: formData.email, password: formData.password });
+        if (success) {
+          navigate('/app/dashboard', { replace: true });
+        }
+      }
+    } catch (error) {
+      setErrors({ general: 'An error occurred. Please try again.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear errors when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+    if (errors.general) {
+      setErrors(prev => ({ ...prev, general: '' }));
+    }
+  };
+
+  const handleForgotPassword = () => {
+    addNotification({
+      type: 'info',
+      title: 'Password Reset',
+      message: 'Password reset instructions have been sent to your email.',
+      duration: 5000
+    });
+  };
+
+  const handleDemoLogin = () => {
     if (isLoginMode) {
+      // Demo login with pre-filled credentials
+      setFormData(prev => ({
+        ...prev,
+        email: 'demo@ezemrx.com',
+        password: 'demo123'
+      }));
+      
+      setTimeout(() => {
+        const success = auth?.login({ email: 'demo@ezemrx.com', password: 'demo123' });
+        if (success) {
+          addNotification({
+            type: 'success',
+            title: 'Demo Access Granted!',
+            message: 'Welcome to the ezEMRx demo environment.',
+            duration: 3000
+          });
+          navigate('/app/dashboard', { replace: true });
+        }
+      }, 500);
+    }
+  };
+
+  const handleGetStarted = () => {
+    if (!isLoginMode) {
       addNotification({
         type: 'success',
-        title: 'Welcome Back!',
-        message: 'Successfully logged into ezEMRx platform.',
-        actions: [
-          {
-            label: 'Go to Dashboard',
-            onClick: () => window.location.href = '/dashboard',
-            variant: 'primary'
-          }
-        ]
-      });
-    } else {
-      addNotification({
-        type: 'success',
-        title: 'Account Created!',
-        message: 'Welcome to ezEMRx! Your account has been created successfully.',
-        actions: [
-          {
-            label: 'Start Setup',
-            onClick: () => window.location.href = '/dashboard',
-            variant: 'primary'
-          }
-        ]
+        title: 'Getting Started!',
+        message: 'Please fill out the form to create your account.',
+        duration: 3000
       });
     }
+    setIsLoginMode(false);
   };
 
   const keyFeatures = [
@@ -307,6 +424,13 @@ export default function LandingPage() {
 
                 {/* Form Fields */}
                 <form onSubmit={(e) => { e.preventDefault(); handleAuth(); }} className="space-y-4">
+                  {/* General Error */}
+                  {errors.general && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                      <p className="text-sm text-red-600">{errors.general}</p>
+                    </div>
+                  )}
+
                   {!isLoginMode && (
                     <>
                       <div>
@@ -314,20 +438,32 @@ export default function LandingPage() {
                         <input
                           type="text"
                           value={formData.fullName}
-                          onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          onChange={(e) => handleInputChange('fullName', e.target.value)}
+                          className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                            errors.fullName ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                          }`}
                           placeholder="Dr. Sarah Chen"
+                          disabled={isLoading}
                         />
+                        {errors.fullName && (
+                          <p className="text-sm text-red-600 mt-1">{errors.fullName}</p>
+                        )}
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Organization</label>
                         <input
                           type="text"
                           value={formData.organizationName}
-                          onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          onChange={(e) => handleInputChange('organizationName', e.target.value)}
+                          className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                            errors.organizationName ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                          }`}
                           placeholder="Community Health Center"
+                          disabled={isLoading}
                         />
+                        {errors.organizationName && (
+                          <p className="text-sm text-red-600 mt-1">{errors.organizationName}</p>
+                        )}
                       </div>
                     </>
                   )}
@@ -339,11 +475,17 @@ export default function LandingPage() {
                       <input
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        onChange={(e) => handleInputChange('email', e.target.value)}
+                        className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                          errors.email ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                        }`}
                         placeholder="sarah.chen@clinic.org"
+                        disabled={isLoading}
                       />
                     </div>
+                    {errors.email && (
+                      <p className="text-sm text-red-600 mt-1">{errors.email}</p>
+                    )}
                   </div>
 
                   <div>
@@ -353,18 +495,25 @@ export default function LandingPage() {
                       <input
                         type={showPassword ? 'text' : 'password'}
                         value={formData.password}
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
-                        className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        onChange={(e) => handleInputChange('password', e.target.value)}
+                        className={`w-full pl-10 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                          errors.password ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                        }`}
                         placeholder="••••••••"
+                        disabled={isLoading}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
+                        disabled={isLoading}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
                         {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
                     </div>
+                    {errors.password && (
+                      <p className="text-sm text-red-600 mt-1">{errors.password}</p>
+                    )}
                   </div>
 
                   {!isLoginMode && (
@@ -375,36 +524,74 @@ export default function LandingPage() {
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={formData.confirmPassword}
-                          onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                            errors.confirmPassword ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                          }`}
                           placeholder="••••••••"
+                          disabled={isLoading}
                         />
                       </div>
+                      {errors.confirmPassword && (
+                        <p className="text-sm text-red-600 mt-1">{errors.confirmPassword}</p>
+                      )}
                     </div>
                   )}
 
                   {isLoginMode && (
                     <div className="flex items-center justify-between text-sm">
                       <label className="flex items-center">
-                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                        <input 
+                          type="checkbox" 
+                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" 
+                          disabled={isLoading}
+                        />
                         <span className="ml-2 text-gray-600">Remember me</span>
                       </label>
-                      <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+                      <button
+                        type="button"
+                        onClick={handleForgotPassword}
+                        className="text-blue-600 hover:text-blue-700 font-medium"
+                        disabled={isLoading}
+                      >
                         Forgot password?
-                      </a>
+                      </button>
                     </div>
                   )}
 
                   {/* Submit Button */}
-                  <AnimatedButton
-                    variant="primary"
-                    onClick={handleAuth}
-                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
-                    animation="glow"
-                  >
-                    {isLoginMode ? 'Sign In' : 'Create Account'}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </AnimatedButton>
+                  <div className="space-y-3">
+                    <AnimatedButton
+                      variant="primary"
+                      onClick={handleAuth}
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:transform-none"
+                      animation="glow"
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          {isLoginMode ? 'Signing In...' : 'Creating Account...'}
+                        </>
+                      ) : (
+                        <>
+                          {isLoginMode ? 'Sign In' : 'Create Account'}
+                          <ArrowRight className="ml-2 h-5 w-5" />
+                        </>
+                      )}
+                    </AnimatedButton>
+                    
+                    {isLoginMode && (
+                      <button
+                        type="button"
+                        onClick={handleDemoLogin}
+                        disabled={isLoading}
+                        className="w-full py-3 px-4 border border-gray-300 rounded-xl text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                      >
+                        Try Demo Account
+                      </button>
+                    )}
+                  </div>
                 </form>
 
                 {/* Social Proof */}
@@ -435,6 +622,10 @@ export default function LandingPage() {
       <section className="relative z-20 py-20 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
+            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 px-4 py-2 rounded-full mb-6">
+              <Sparkles className="h-4 w-4" />
+              <span className="text-sm font-semibold">Trusted by 500+ Healthcare Organizations</span>
+            </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
               Why Healthcare Professionals Choose ezEMRx
             </h2>
@@ -555,15 +746,30 @@ export default function LandingPage() {
               <p className="text-gray-400 text-sm">
                 © 2025 ezEMRx. All rights reserved.
               </p>
-              <div className="flex items-center space-x-6 mt-4 md:mt-0">
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <Shield className="h-4 w-4 text-green-500" />
-                  <span>HIPAA Compliant</span>
-                </div>
-                <div className="flex items-center space-x-2 text-sm text-gray-400">
-                  <Award className="h-4 w-4 text-blue-500" />
-                  <span>SOC 2 Certified</span>
-                </div>
+              <div className="flex items-center space-x-4 mt-4 md:mt-0">
+                <button
+                  onClick={handleGetStarted}
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Get Started
+                </button>
+                <span className="text-gray-600">|</span>
+                <button
+                  onClick={handleDemoLogin}
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Try Demo
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center space-x-6 mt-4 md:mt-0">
+              <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <Shield className="h-4 w-4 text-green-500" />
+                <span>HIPAA Compliant</span>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-gray-400">
+                <Award className="h-4 w-4 text-blue-500" />
+                <span>SOC 2 Certified</span>
               </div>
             </div>
           </div>
