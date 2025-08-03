@@ -49,7 +49,6 @@ interface NavigationItem {
 
 export default function Layout({ children }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['core', 'communication']);
   const [showPatientSearch, setShowPatientSearch] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -227,39 +226,28 @@ export default function Layout({ children }: LayoutProps) {
         fixed inset-y-0 left-0 z-50 transform transition-all duration-300 ease-in-out
         lg:translate-x-0 lg:static lg:inset-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        ${sidebarCollapsed ? 'w-16' : 'w-72'}
-        bg-white shadow-strong border-r border-gray-200
-        flex flex-col
+        w-72
+        bg-white shadow-lg border-r border-gray-200
+        flex flex-col overflow-hidden
       `}>
         
         {/* Header Section */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-blue-50">
-          {!sidebarCollapsed && (
-            <div className="flex items-center space-x-3">
-              <div className="bg-primary-500 p-2 rounded-xl shadow-soft">
-                <FileText className="h-6 w-6 text-white" />
-              </div>
-              <div>
-                <span className="text-xl font-bold text-gray-900">ezEMRx</span>
-                <p className="text-xs text-gray-500 font-medium">Healthcare EHR</p>
-              </div>
+        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-blue-50">
+          <div className="flex items-center space-x-3">
+            <div className="bg-primary-500 p-2 rounded-xl shadow-soft">
+              <FileText className="h-6 w-6 text-white" />
             </div>
-          )}
+            <div>
+              <span className="text-xl font-bold text-gray-900">ezEMRx</span>
+              <p className="text-xs text-gray-500 font-medium">Healthcare EHR</p>
+            </div>
+          </div>
           
-          <div className="flex items-center space-x-1">
-            {/* Collapse Toggle - Desktop */}
-            <button
-              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-              className="hidden lg:block p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
-              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              <ChevronRight className={`h-4 w-4 transition-transform ${sidebarCollapsed ? '' : 'rotate-180'}`} />
-            </button>
-            
+          <div className="flex items-center">
             {/* Close Toggle - Mobile */}
             <button
               onClick={() => setSidebarOpen(false)}
-              className="lg:hidden p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+              className="lg:hidden flex items-center justify-center w-8 h-8 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
               aria-label="Close sidebar"
             >
               <X className="h-5 w-5" />
@@ -268,27 +256,25 @@ export default function Layout({ children }: LayoutProps) {
         </div>
 
         {/* Quick Actions Bar */}
-        {!sidebarCollapsed && (
-          <div className="p-4 border-b border-gray-100 bg-gray-50">
+          <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
             <button
               onClick={() => setShowPatientSearch(true)}
-              className="w-full flex items-center space-x-3 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-white rounded-lg transition-colors group"
+              className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-gray-600 hover:text-gray-900 hover:bg-white rounded-xl transition-all duration-200 group hover:shadow-sm"
             >
               <Search className="h-4 w-4 group-hover:text-primary-600 transition-colors" />
               <span>Search patients...</span>
             </button>
           </div>
-        )}
 
         {/* Navigation Groups */}
-        <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto scrollbar-thin">
+        <nav className="flex-1 px-6 py-6 space-y-6 overflow-y-auto scrollbar-thin">
           {navigationGroups.map((group) => (
-            <div key={group.title} className="space-y-1">
+            <div key={group.title} className="space-y-3">
               {/* Group Header */}
-              {!sidebarCollapsed && group.collapsible !== false && (
+              {group.collapsible !== false && (
                 <button
                   onClick={() => toggleGroup(group.title)}
-                  className="w-full flex items-center justify-between px-3 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors"
+                  className="w-full flex items-center justify-between px-2 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 transition-colors rounded-lg hover:bg-gray-50"
                   aria-expanded={isGroupExpanded(group.title)}
                 >
                   <span className="uppercase tracking-wider">{group.title}</span>
@@ -299,8 +285,8 @@ export default function Layout({ children }: LayoutProps) {
               )}
               
               {/* Group Items */}
-              <div className={`space-y-1 transition-all duration-200 ${
-                sidebarCollapsed || !group.collapsible || isGroupExpanded(group.title) 
+              <div className={`space-y-2 transition-all duration-200 ${
+                !group.collapsible || isGroupExpanded(group.title) 
                   ? 'opacity-100 max-h-none' 
                   : 'opacity-0 max-h-0 overflow-hidden'
               }`}>
@@ -313,17 +299,16 @@ export default function Layout({ children }: LayoutProps) {
                       key={item.name}
                       to={item.href}
                       className={`
-                        group relative flex items-center px-3 py-2.5 text-sm font-medium rounded-xl 
-                        transition-all duration-200 transform hover:scale-[1.02]
+                        group relative flex items-center px-4 py-3 text-sm font-medium rounded-xl 
+                        transition-all duration-200
                         ${isActive
-                          ? 'bg-primary-100 text-primary-700 shadow-soft border-l-3 border-primary-600'
+                          ? 'bg-primary-100 text-primary-700 shadow-sm'
                           : 'text-gray-700 hover:text-primary-700 hover:bg-primary-50'
                         }
                       `}
                       onClick={() => setSidebarOpen(false)}
-                      title={sidebarCollapsed ? `${item.name}: ${item.description}` : undefined}
                     >
-                      <div className="relative">
+                      <div className="relative flex-shrink-0">
                         <Icon className={`
                           h-5 w-5 transition-colors duration-200
                           ${isActive ? 'text-primary-600' : 'text-gray-400 group-hover:text-primary-600'}
@@ -331,45 +316,31 @@ export default function Layout({ children }: LayoutProps) {
                         
                         {/* New indicator */}
                         {item.new && (
-                          <span className="absolute -top-1 -right-1 h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+                          <span className="absolute -top-1 -right-1 h-2 w-2 bg-green-500 rounded-full" />
                         )}
                       </div>
                       
-                      {!sidebarCollapsed && (
                         <>
-                          <div className="ml-3 flex-1 min-w-0">
+                          <div className="ml-4 flex-1 min-w-0">
                             <div className="flex items-center justify-between">
                               <span className="truncate">{item.name}</span>
                               {/* Badge */}
                               {item.badge && (
                                 <span className={`
-                                  inline-flex items-center px-2 py-1 rounded-full text-xs font-bold
+                                  inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold min-w-[20px] h-5
                                   ${getBadgeColor(item.badgeColor)}
-                                  transform transition-transform group-hover:scale-110
                                 `}>
                                   {item.badge}
                                 </span>
                               )}
                             </div>
                             {item.description && (
-                              <p className="text-xs text-gray-500 mt-0.5 truncate">
+                              <p className="text-xs text-gray-500 mt-1 truncate leading-none">
                                 {item.description}
                               </p>
                             )}
                           </div>
                         </>
-                      )}
-                      
-                      {/* Tooltip for collapsed state */}
-                      {sidebarCollapsed && item.badge && (
-                        <span className={`
-                          absolute -right-1 -top-1 inline-flex items-center justify-center 
-                          h-4 w-4 text-xs font-bold rounded-full
-                          ${getBadgeColor(item.badgeColor)}
-                        `}>
-                          {typeof item.badge === 'number' && item.badge > 9 ? '9+' : item.badge}
-                        </span>
-                      )}
                     </Link>
                   );
                 })}
@@ -379,52 +350,48 @@ export default function Layout({ children }: LayoutProps) {
         </nav>
 
         {/* Recent Activity */}
-        {!sidebarCollapsed && (
-          <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
               Recent Activity
             </h4>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {recentActivity.slice(0, 2).map((activity, index) => {
                 const Icon = activity.icon;
                 return (
-                  <div key={index} className="flex items-center space-x-2 text-xs">
+                  <div key={index} className="flex items-start space-x-3 text-xs">
                     <Icon className="h-3 w-3 text-gray-400" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-gray-600 truncate">{activity.action}</p>
-                      <p className="text-gray-400">{activity.time}</p>
+                      <p className="text-gray-600 truncate leading-tight">{activity.action}</p>
+                      <p className="text-gray-400 mt-1 leading-none">{activity.time}</p>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-        )}
 
         {/* Enhanced User Section */}
-        <div className="border-t border-gray-200 p-4 bg-white">
+        <div className="border-t border-gray-200 p-6 bg-white">
           <div className="relative">
             <button
               onClick={() => setUserMenuOpen(!userMenuOpen)}
               className={`
-                w-full flex items-center space-x-3 p-3 rounded-xl transition-colors
+                w-full flex items-center space-x-3 p-4 rounded-xl transition-all duration-200
                 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500
-                ${sidebarCollapsed ? 'justify-center' : ''}
               `}
             >
               <div className="relative">
-                <div className="bg-primary-100 p-2 rounded-full ring-2 ring-white">
+                <div className="bg-primary-100 p-2 rounded-full">
                   <User className="h-4 w-4 text-primary-600" />
                 </div>
-                <span className="absolute -bottom-0 -right-0 h-3 w-3 bg-green-400 border-2 border-white rounded-full" />
+                <span className="absolute -bottom-1 -right-1 h-3 w-3 bg-green-400 border-2 border-white rounded-full" />
               </div>
               
-              {!sidebarCollapsed && (
                 <>
                   <div className="flex-1 text-left">
                     <p className="text-sm font-medium text-gray-900">Dr. Sarah Chen</p>
-                    <div className="flex items-center space-x-2">
-                      <p className="text-xs text-gray-500">Family Health Clinic</p>
+                    <div className="flex items-center space-x-2 mt-1">
+                      <p className="text-xs text-gray-500 leading-none">Family Health Clinic</p>
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
                         Online
                       </span>
@@ -434,22 +401,21 @@ export default function Layout({ children }: LayoutProps) {
                     userMenuOpen ? 'rotate-180' : ''
                   }`} />
                 </>
-              )}
             </button>
 
             {/* User Menu Dropdown */}
-            {userMenuOpen && !sidebarCollapsed && (
-              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2">
+            {userMenuOpen && (
+              <div className="absolute bottom-full left-0 right-0 mb-3 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                <button className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 transition-colors">
                   <User className="h-4 w-4 text-gray-400" />
                   <span>Profile Settings</span>
                 </button>
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2">
+                <button className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 transition-colors">
                   <Star className="h-4 w-4 text-gray-400" />
                   <span>Preferences</span>
                 </button>
-                <hr className="my-1" />
-                <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 flex items-center space-x-2 text-red-600">
+                <hr className="my-2 mx-4" />
+                <button className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 flex items-center space-x-3 text-red-600 transition-colors">
                   <LogOut className="h-4 w-4" />
                   <span>Sign Out</span>
                 </button>
