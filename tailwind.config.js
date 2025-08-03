@@ -66,6 +66,9 @@ export default {
         '2xl': '16px',
         '3xl': '24px'
       },
+      borderWidth: {
+        '3': '3px'
+      },
       boxShadow: {
         'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
         'medium': '0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
@@ -77,6 +80,10 @@ export default {
         'slide-down': 'slideDown 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'float': 'float 3s ease-in-out infinite'
+      },
+      zIndex: {
+        '60': '60',
+        '70': '70'
       },
       keyframes: {
         fadeIn: {
