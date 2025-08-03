@@ -43,6 +43,7 @@ export default function ActionPanel({
 }: ActionPanelProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [isMenuExpanded, setIsMenuExpanded] = useState(false);
   const [panelWidth, setPanelWidth] = useState(getSizeWidth());
   const [isResizing, setIsResizing] = useState(false);
 
@@ -155,19 +156,23 @@ export default function ActionPanel({
               </button>
             )}
             
-            <button
-              onClick={() => setIsMaximized(!isMaximized)}
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
-              title={isMaximized ? 'Restore' : 'Maximize'}
-            >
-              {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
-            </button>
+            {!isMenuExpanded && (
+              <button
+                onClick={() => setIsMaximized(!isMaximized)}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+                title={isMaximized ? 'Restore' : 'Maximize'}
+              >
+                {isMaximized ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </button>
+            )}
             
             {onClose && (
               <button
                 onClick={onClose}
                 className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
                 title="Close"
+                onMouseEnter={() => setIsMenuExpanded(true)}
+                onMouseLeave={() => setIsMenuExpanded(false)}
               >
                 <X className="h-4 w-4" />
               </button>
