@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../App';
 import { useNotifications } from './NotificationSystem';
 import PatientSearch from './PatientSearch';
@@ -50,6 +50,7 @@ interface NavigationItem {
 
 export default function Layout({ children }: LayoutProps) {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['core', 'communication']);
   const [showPatientSearch, setShowPatientSearch] = useState(false);
@@ -66,13 +67,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Dashboard', 
-         href: '/app/dashboard', 
+         href: '/app/dashboard',
           icon: Home,
           description: 'Overview and quick actions'
         },
         { 
           name: 'Smart Charting', 
-         href: '/app/charting', 
+         href: '/app/charting',
           icon: FileText,
           description: 'AI-enhanced documentation',
           new: true
@@ -86,7 +87,7 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Referrals', 
-         href: '/app/referrals', 
+         href: '/app/referrals',
           icon: Users,
           badge: 3,
           badgeColor: 'warning',
@@ -94,7 +95,7 @@ export default function Layout({ children }: LayoutProps) {
         },
         { 
           name: 'Case Notes', 
-         href: '/app/notes', 
+         href: '/app/notes',
           icon: MessageSquare,
           description: 'Collaborative documentation'
         }
@@ -107,13 +108,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Reports', 
-         href: '/app/reports', 
+         href: '/app/reports',
           icon: BarChart3,
           description: 'Analytics and insights'
         },
         { 
           name: 'Compliance', 
-         href: '/app/compliance', 
+         href: '/app/compliance',
           icon: Shield,
           badge: '94%',
           badgeColor: 'success',
@@ -128,7 +129,7 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Messages', 
-         href: '/app/messages', 
+         href: '/app/messages',
           icon: Mail,
           badge: 5,
           badgeColor: 'primary',
@@ -143,13 +144,13 @@ export default function Layout({ children }: LayoutProps) {
       items: [
         { 
           name: 'Settings', 
-         href: '/app/settings', 
+         href: '/app/settings',
           icon: Settings,
           description: 'System configuration'
         },
         { 
           name: 'Help & Support', 
-         href: '/app/help', 
+         href: '/app/help',
           icon: HelpCircle,
           description: 'Documentation and support'
         }
@@ -299,7 +300,7 @@ export default function Layout({ children }: LayoutProps) {
                   return (
                     <Link
                       key={item.name}
-                     to={item.href}
+                      to={item.href}
                       className={`
                         group relative flex items-center px-4 py-3 text-sm font-medium rounded-xl 
                         transition-all duration-200

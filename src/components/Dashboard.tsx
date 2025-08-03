@@ -137,53 +137,57 @@ export default function Dashboard() {
       description: 'Search and select patient records',
       icon: Users,
       color: 'bg-blue-500',
-     onClick: () => setShowPatientSearch(true),
-     href: null
+      action: 'modal',
+      onClick: () => setShowPatientSearch(true)
     },
     {
       title: 'Schedule Appointment',
       description: 'Book new patient appointments',
       icon: Calendar,
       color: 'bg-green-500',
-     onClick: () => setShowAppointmentScheduler(true),
-     href: null
+      action: 'modal', 
+      onClick: () => setShowAppointmentScheduler(true)
     },
     {
       title: 'Start Charting',
       description: 'Begin new patient documentation',
       icon: ClipboardCheck,
       color: 'bg-primary-500',
-     onClick: () => window.location.href = '/app/charting',
-     href: '/app/charting'
+      action: 'navigate',
+      href: '/app/charting'
     },
     {
       title: 'View Reports',
       description: 'Access analytics and reports',
       icon: TrendingUp,
       color: 'bg-purple-500',
-     onClick: () => window.location.href = '/app/reports',
-     href: '/app/reports'
+      action: 'navigate',
+      href: '/app/reports'
     },
     {
       title: 'Message Center',
       description: 'Secure team communication',
       icon: MessageSquare,
       color: 'bg-yellow-500',
-     onClick: () => window.location.href = '/app/messages',
-     href: '/app/messages'
+      action: 'navigate',
+      href: '/app/messages'
     },
     {
       title: 'System Settings',
       description: 'Configure preferences',
       icon: Settings,
       color: 'bg-gray-500',
-     onClick: () => window.location.href = '/app/settings',
-     href: '/app/settings'
+      action: 'navigate', 
+      href: '/app/settings'
     }
   ];
 
   const handleQuickAction = (action: any) => {
-    action.onClick();
+    if (action.action === 'modal') {
+      action.onClick();
+    } else if (action.action === 'navigate' && action.href) {
+      navigate(action.href);
+    }
   };
 
   return (
