@@ -110,7 +110,7 @@ export default function ActionPanel({
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-gray-600 bg-opacity-25 z-40 lg:hidden" onClick={onClose} />
+      <div className="fixed inset-0 bg-gray-600 bg-opacity-25 z-50 lg:hidden" onClick={onClose} />
       
       {/* Panel */}
       <div

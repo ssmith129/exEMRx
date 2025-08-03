@@ -98,25 +98,19 @@ export default function AIPanel({ onClose }: AIPanelProps) {
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 w-96 bg-white shadow-xl border-l border-gray-200 z-40 overflow-hidden flex flex-col">
+    <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-200">
+      <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
           <div className="bg-primary-100 p-2 rounded-lg">
             <Brain className="h-5 w-5 text-primary-600" />
           </div>
           <h2 className="text-lg font-semibold text-gray-900">AI Assistant</h2>
         </div>
-        <button
-          onClick={onClose}
-          className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <X className="h-5 w-5" />
-        </button>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-gray-200 flex-shrink-0">
         <button
           onClick={() => setActiveTab('insights')}
           className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
@@ -142,7 +136,7 @@ export default function AIPanel({ onClose }: AIPanelProps) {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto p-6 min-h-0">
         {activeTab === 'insights' && (
           <div className="space-y-4">
             <div className="mb-4">
@@ -254,7 +248,7 @@ export default function AIPanel({ onClose }: AIPanelProps) {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-gray-200 p-4">
+      <div className="border-t border-gray-200 p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="text-xs text-gray-500">
             Last updated: 2 min ago
