@@ -153,14 +153,14 @@ export default function Settings() {
           />
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('professional')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('professional') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('professional') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
     </div>
@@ -204,14 +204,14 @@ export default function Settings() {
           ))}
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('notifications')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('notifications') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('notifications') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
     </div>
@@ -292,14 +292,14 @@ export default function Settings() {
           </div>
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('security')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('security') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('security') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
     </div>
@@ -333,14 +333,14 @@ export default function Settings() {
           </div>
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('appearance')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('appearance') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('appearance') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
     </div>
@@ -380,14 +380,14 @@ export default function Settings() {
           />
         </div>
         <div className="flex justify-end mt-4">
-          <InteractiveButton 
+          <AnimatedButton 
             variant="primary" 
             onClick={() => handleSave('system')}
-            loading={isSaving}
+            animation="glow"
             icon={savedSettings.includes('system') ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
           >
             {savedSettings.includes('system') ? 'Saved' : 'Save Changes'}
-          </InteractiveButton>
+          </AnimatedButton>
         </div>
       </ResponsiveCard>
 
