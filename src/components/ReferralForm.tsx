@@ -245,7 +245,7 @@ export default function ReferralForm() {
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">AI-Powered Referrals</h1>
+        <h1 className="text-3xl font-bold text-gray-900">AI-Powered Patient Referrals</h1>
         <p className="text-gray-600 mt-2">Find the right specialists for Sofia Martinez based on AI analysis and clinical guidelines.</p>
       </div>
 
@@ -303,7 +303,7 @@ export default function ReferralForm() {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-2">
                   <Sparkles className="h-5 w-5 text-primary-600" />
-                  <h2 className="text-xl font-semibold text-gray-900">AI Recommendations</h2>
+                  <h2 className="text-xl font-semibold text-gray-900" id="ai-recommendations">AI Recommendations</h2>
                   <span className="text-sm text-gray-500">Based on patient analysis</span>
                 </div>
                 <InteractiveButton
@@ -323,7 +323,7 @@ export default function ReferralForm() {
           {/* Search Results */}
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-900" id="available-providers">
                 {searchQuery ? `Search Results for "${searchQuery}"` : 'Available Providers'}
               </h2>
               <span className="text-sm text-gray-500">{searchResults.length} providers found</span>

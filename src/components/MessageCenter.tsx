@@ -341,7 +341,7 @@ export default function MessageCenter() {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Message Center</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Secure Message Center</h1>
             <p className="text-gray-600 mt-2">Secure communication with your healthcare team</p>
           </div>
           <InteractiveButton 

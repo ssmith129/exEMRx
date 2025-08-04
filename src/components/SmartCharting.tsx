@@ -173,9 +173,15 @@ export default function SmartCharting() {
       {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${showAIPanel ? 'mr-96' : ''}`}>
         <div className="p-6 max-w-6xl mx-auto">
+          {/* Page Header */}
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-gray-900">Smart Charting - AI-Enhanced Documentation</h1>
+            <p className="text-gray-600 mt-2">AI-powered clinical documentation for {patientInfo.name}</p>
+          </div>
+
           {/* Patient Header */}
           <ResponsiveCard
-            title={patientInfo.name}
+            title={`Patient: ${patientInfo.name}`}
             subtitle={`MRN: ${patientInfo.mrn}`}
             className="mb-6"
             actions={

@@ -195,7 +195,7 @@ export default function Dashboard() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Healthcare Dashboard - Today's Overview</h1>
         <p className="text-gray-600 mt-2">Welcome back, Dr. Chen. Here's what's happening at your clinic today.</p>
       </div>
 
@@ -232,6 +232,8 @@ export default function Dashboard() {
           <div className="bg-white rounded-xl shadow-soft border border-gray-200">
             <button
               onClick={() => setAlertsExpanded(!alertsExpanded)}
+              aria-expanded={alertsExpanded}
+              aria-controls="system-alerts-content"
               className="w-full flex items-center justify-between p-6 hover:bg-gray-50 transition-colors duration-200 rounded-xl"
             >
               <div className="flex items-center space-x-4">
@@ -239,7 +241,7 @@ export default function Dashboard() {
                   <AlertTriangle className="h-5 w-5 text-red-600" />
                 </div>
                 <div className="text-left">
-                  <h2 className="text-xl font-semibold text-gray-900">System Alerts</h2>
+                  <h2 className="text-xl font-semibold text-gray-900" id="system-alerts">System Alerts</h2>
                   <p className="text-sm text-gray-600">
                     {alerts.length} active alert{alerts.length !== 1 ? 's' : ''} requiring attention
                   </p>
@@ -262,7 +264,7 @@ export default function Dashboard() {
             <div className={`
               transition-all duration-300 ease-in-out overflow-hidden
               ${alertsExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}
-            `}>
+            `} id="system-alerts-content" aria-labelledby="system-alerts">
               <div className="px-6 pb-6 border-t border-gray-100">
                 <div className="pt-4">
                   <AlertSystem
@@ -279,7 +281,7 @@ export default function Dashboard() {
 
       {/* Data Visualization Section */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-secondary-900 mb-6">Analytics Overview</h2>
+        <h2 className="text-xl font-semibold text-secondary-900 mb-6" id="analytics-overview">Analytics Overview</h2>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
           <PatientFlowChart />
           <ComplianceChart />
@@ -288,7 +290,7 @@ export default function Dashboard() {
 
       {/* Quick Actions */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold text-secondary-900 mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold text-secondary-900 mb-4" id="quick-actions">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {quickActions.map((action, index) => {
             const Icon = action.icon;
@@ -304,7 +306,7 @@ export default function Dashboard() {
                   </div>
                   <h3 className="ml-3 text-lg font-medium text-secondary-900">{action.title}</h3>
                 </div>
-                <p className="text-sm text-secondary-600">{action.description}</p>
+                <p className="text-sm text-secondary-600" aria-describedby={`action-${index}-title`}>{action.description}</p>
               </button>
             );
           })}
@@ -316,7 +318,7 @@ export default function Dashboard() {
         <div className="xl:col-span-2 bg-white rounded-xl shadow-soft border border-secondary-100/80">
           <div className="p-6 border-b border-secondary-200/50">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-secondary-900">Recent Activity</h2>
+              <h2 className="text-xl font-semibold text-secondary-900" id="recent-activity">Recent Activity</h2>
               <select 
                 value={selectedTimeframe}
                 onChange={(e) => setSelectedTimeframe(e.target.value)}
@@ -343,7 +345,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <p className="text-sm font-medium text-secondary-900">{activity.patient}</p>
+                      <h4 className="text-sm font-medium text-secondary-900">{activity.patient}</h4>
                       {activity.aiAssisted && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
                           AI Assisted
@@ -371,7 +373,7 @@ export default function Dashboard() {
         {/* Compliance Alerts */}
         <div className="bg-white rounded-xl shadow-soft border border-secondary-100/80">
           <div className="p-6 border-b border-secondary-200/50">
-            <h2 className="text-xl font-semibold text-secondary-900">Compliance Alerts</h2>
+            <h2 className="text-xl font-semibold text-secondary-900" id="compliance-alerts">Compliance Alerts</h2>
           </div>
           <div className="p-6">
             <div className="space-y-4">

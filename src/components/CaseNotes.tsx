@@ -294,7 +294,7 @@ export default function CaseNotes() {
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Case Notes</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Clinical Case Notes</h1>
         <p className="text-gray-600 mt-2">Clinical documentation and collaborative notes for Sofia Martinez</p>
       </div>
 
@@ -306,7 +306,7 @@ export default function CaseNotes() {
               <User className="h-5 w-5 text-primary-600" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Sofia Martinez</h2>
+              <h2 className="text-lg font-semibold text-gray-900" id="patient-info">Patient: Sofia Martinez</h2>
               <p className="text-sm text-gray-600">MRN: WIC-789012 • 4 years 10 months • WIC Patient</p>
             </div>
           </div>
@@ -323,7 +323,7 @@ export default function CaseNotes() {
       {/* New Note Form */}
       {showNewNote && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Note</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4" id="add-note-form">Add New Clinical Note</h3>
           <div className="space-y-4">
             <textarea
               className="w-full h-32 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
@@ -354,7 +354,7 @@ export default function CaseNotes() {
       {/* Notes List */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Clinical Notes</h2>
+          <h2 className="text-xl font-semibold text-gray-900" id="clinical-notes">Clinical Notes</h2>
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <MessageSquare className="h-4 w-4" />
             <span>{notes.length} notes</span>

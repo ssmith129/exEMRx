@@ -180,9 +180,9 @@ export default function LandingPage() {
                 <FileText className="h-8 w-8 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   ezEMRx
-                </h1>
+                </div>
                 <p className="text-xs text-gray-500 font-medium">Healthcare Reimagined</p>
               </div>
             </div>
@@ -233,12 +233,12 @@ export default function LandingPage() {
 
               {/* Main Headline */}
               <div>
-                <h2 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+                <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
                   Healthcare
                   <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block leading-tight py-1">
                     Reimagined
                   </span>
-                </h2>
+                </h1>
                 <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
                   Revolutionary AI-powered Electronic Health Record system for public health clinics. 
                   Streamline workflows, ensure compliance, and improve patient outcomes.
@@ -289,9 +289,9 @@ export default function LandingPage() {
               <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-8 relative z-10">
                 {/* Form Header */}
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
                     {isLoginMode ? 'Welcome Back' : 'Get Started Today'}
-                  </h3>
+                  </h2>
                   <p className="text-gray-600">
                     {isLoginMode ? 'Sign in to your ezEMRx account' : 'Create your ezEMRx account'}
                   </p>
@@ -486,7 +486,7 @@ export default function LandingPage() {
       <section className="relative z-20 py-20 bg-white/50 backdrop-blur-sm">
         <div className="px-6 max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4" id="features">
               Why Healthcare Professionals Choose ezEMRx
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -500,7 +500,7 @@ export default function LandingPage() {
                 <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4 leading-tight">{feature.title}</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4 leading-tight">{feature.title}</h3>
                 <p className="text-gray-600 leading-relaxed line-height-[1.6]">{feature.description}</p>
               </div>
             ))}
@@ -512,7 +512,7 @@ export default function LandingPage() {
       <section className="relative z-20 py-20">
         <div className="px-6 max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4" id="testimonials">
               Trusted by Healthcare Heroes
             </h2>
             <p className="text-xl text-gray-600">
@@ -537,7 +537,7 @@ export default function LandingPage() {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed">{testimonial.role}</p>
+                    <h4 className="text-gray-600 text-sm leading-relaxed font-medium">{testimonial.role}</h4>
                     <p className="text-gray-500 text-sm">{testimonial.organization}</p>
                   </div>
                 </div>
@@ -553,12 +553,12 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Brand */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-3" role="banner" aria-label="Company logo and name">
                 <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-2 rounded-xl">
                   <FileText className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">ezEMRx</h3>
+                  <div className="text-xl font-bold">ezEMRx</div>
                   <p className="text-gray-400 text-sm">Healthcare Reimagined</p>
                 </div>
               </div>
@@ -569,7 +569,7 @@ export default function LandingPage() {
 
             {/* Products */}
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
@@ -580,7 +580,7 @@ export default function LandingPage() {
 
             {/* Company */}
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h3 className="font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">About</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
@@ -591,7 +591,7 @@ export default function LandingPage() {
 
             {/* Support */}
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-sm text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>

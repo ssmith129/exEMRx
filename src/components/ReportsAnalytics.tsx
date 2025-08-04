@@ -235,7 +235,7 @@ export default function ReportsAnalytics() {
     <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Reports & Analytics</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Healthcare Reports & Analytics Dashboard</h1>
         <p className="text-gray-600 mt-2">Comprehensive insights into clinic operations and patient outcomes</p>
       </div>
 
