@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Breadcrumb from './Breadcrumb';
+import RelatedContent from './RelatedContent';
+import { ContextualLinks, contextualLinkSets } from './ContextualLinks';
 import { useAlerts, AlertSystem, AlertTemplates } from './AlertSystem';
 import { FloatingActionButton } from './MicroInteractions';
 import { useNotifications } from './NotificationSystem';
@@ -193,6 +196,9 @@ export default function Dashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb />
+      
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Healthcare Dashboard - Today's Overview</h1>
@@ -345,7 +351,13 @@ export default function Dashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <h4 className="text-sm font-medium text-secondary-900">{activity.patient}</h4>
+                      <Link 
+                        to={`/app/patient/${activity.id}`}
+                        className="text-sm font-medium text-secondary-900 hover:text-primary-600 transition-colors"
+                        title={`View ${activity.patient} medical records`}
+                      >
+                        {activity.patient}
+                      </Link>
                       {activity.aiAssisted && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-100 text-primary-800">
                           AI Assisted
@@ -354,6 +366,19 @@ export default function Dashboard() {
                     </div>
                     <p className="text-sm text-secondary-600">{activity.action}</p>
                     <p className="text-xs text-secondary-400 mt-1">{activity.time}</p>
+                    
+                    {/* Contextual links based on activity type */}
+                    {activity.type === 'charting' && (
+                      <div className="mt-2">
+                        <ContextualLinks links={[
+                          {
+                            text: 'View clinical documentation',
+                            href: '/app/charting',
+                            title: 'Continue or review clinical charting'
+                          }
+                        ]} />
+                      </div>
+                    )}
                   </div>
                   <ArrowRight className="h-4 w-4 text-secondary-400" />
                 </div>
@@ -412,6 +437,11 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Related Healthcare Tasks */}
+      <div className="mt-8">
+        <RelatedContent currentPage="dashboard" />
       </div>
 
       {/* Modals */}

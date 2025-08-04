@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Breadcrumb from './Breadcrumb';
+import RelatedContent from './RelatedContent';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -233,6 +235,9 @@ export default function ReportsAnalytics() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb />
+      
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Healthcare Reports & Analytics Dashboard</h1>
@@ -308,6 +313,11 @@ export default function ReportsAnalytics() {
             <p className="text-sm text-gray-400">Detailed analytics and insights coming soon</p>
           </div>
         )}
+      </div>
+
+      {/* Related Content */}
+      <div className="mt-8">
+        <RelatedContent currentPage="reports" />
       </div>
     </div>
   );

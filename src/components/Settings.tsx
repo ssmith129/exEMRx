@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Breadcrumb from './Breadcrumb';
 import { useNotifications } from './NotificationSystem';
 import { AnimatedButton } from './MicroInteractions';
 import { 
@@ -426,6 +427,9 @@ export default function Settings() {
 
   return (
     <div className="p-6 max-w-[1200px] mx-auto">
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb />
+      
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">System Settings & Configuration</h1>

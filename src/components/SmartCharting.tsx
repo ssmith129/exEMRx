@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Breadcrumb from './Breadcrumb';
+import RelatedContent from './RelatedContent';
 import { useNotifications } from './NotificationSystem';
 import { AnimatedButton, FloatingActionButton } from './MicroInteractions';
 import { 
@@ -173,6 +175,9 @@ export default function SmartCharting() {
       {/* Main Content */}
       <div className={`flex-1 transition-all duration-300 ${showAIPanel ? 'mr-96' : ''}`}>
         <div className="p-6 max-w-6xl mx-auto">
+          {/* Breadcrumb Navigation */}
+          <Breadcrumb />
+          
           {/* Page Header */}
           <div className="mb-6">
             <h1 className="text-3xl font-bold text-gray-900">Smart Charting - AI-Enhanced Documentation</h1>
@@ -371,6 +376,11 @@ export default function SmartCharting() {
               </AnimatedButton>
               </div>
             </div>
+          </div>
+
+          {/* Related Content */}
+          <div className="mt-8">
+            <RelatedContent currentPage="charting" patientId={patientInfo.mrn} />
           </div>
         </div>
       </div>

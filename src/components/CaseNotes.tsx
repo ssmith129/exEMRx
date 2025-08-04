@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Breadcrumb from './Breadcrumb';
+import { ContextualLinks, contextualLinkSets } from './ContextualLinks';
 import { 
   MessageSquare, 
   User, 
@@ -292,6 +294,9 @@ export default function CaseNotes() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      {/* Breadcrumb Navigation */}
+      <Breadcrumb />
+      
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Clinical Case Notes</h1>
@@ -308,6 +313,11 @@ export default function CaseNotes() {
             <div>
               <h2 className="text-lg font-semibold text-gray-900" id="patient-info">Patient: Sofia Martinez</h2>
               <p className="text-sm text-gray-600">MRN: WIC-789012 • 4 years 10 months • WIC Patient</p>
+            </div>
+            
+            {/* Contextual clinical links */}
+            <div className="mt-2">
+              <ContextualLinks links={contextualLinkSets.patientCare} />
             </div>
           </div>
           <button
