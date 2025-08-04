@@ -131,8 +131,10 @@ function App() {
                       <Route path="dashboard" element={<Dashboard />} />
                       <Route path="charting" element={<SmartCharting />} />
                       <Route path="referrals" element={<ReferralForm />} />
+                     <Route path="referrals/create" element={<ReferralForm />} />
                       <Route path="referrals/new" element={<ReferralForm />} />
                       <Route path="referrals/:id" element={<ReferralForm />} />
+                     <Route path="referrals/manage" element={<ReferralForm />} />
                       <Route path="notes" element={<CaseNotes />} />
                       <Route path="patient/:id" element={<PatientChart patientId="1" onClose={() => window.history.back()} />} />
                       <Route path="patients" element={<div className="p-6"><h1 className="text-2xl font-bold">Patient Directory</h1><p>Patient management coming soon...</p></div>} />

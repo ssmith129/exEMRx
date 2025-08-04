@@ -402,6 +402,7 @@ export default function Layout({ children }: LayoutProps) {
                         }
                       `}
                       onClick={() => setSidebarOpen(false)}
+                     title={`Navigate to ${item.description || item.name}`}
                     >
                       <div className="relative flex-shrink-0">
                         <Icon className={`
@@ -418,7 +419,7 @@ export default function Layout({ children }: LayoutProps) {
                         <>
                           <div className="ml-4 flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <span className="truncate">{item.name}</span>
+                              <span className="truncate font-medium">{item.name}</span>
                               {/* Badge */}
                               {item.badge && (
                                 <span className={`
