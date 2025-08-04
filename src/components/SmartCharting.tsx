@@ -180,7 +180,7 @@ export default function SmartCharting() {
           
           {/* Page Header */}
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900">Smart Charting - AI-Enhanced Documentation</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Patient Chart - Overview</h1>
             <p className="text-gray-600 mt-2">AI-powered clinical documentation for {patientInfo.name}</p>
           </div>
 
