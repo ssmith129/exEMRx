@@ -401,7 +401,10 @@ export default function Layout({ children }: LayoutProps) {
                           : 'text-gray-700 hover:text-primary-700 hover:bg-primary-50'
                         }
                       `}
-                      onClick={() => setSidebarOpen(false)}
+                     onClick={() => {
+                       setSidebarOpen(false);
+                       // Ensure navigation happens
+                     }}
                      title={`Navigate to ${item.description || item.name}`}
                     >
                       <div className="relative flex-shrink-0">
