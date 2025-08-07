@@ -3,6 +3,9 @@ import Breadcrumb from './Breadcrumb';
 import RelatedContent from './RelatedContent';
 import { useNotifications } from './NotificationSystem';
 import { AnimatedButton, FloatingActionButton } from './MicroInteractions';
+import { useFormValidation } from '../hooks/useFormValidation';
+import { createValidationRules } from '../utils/validation';
+import FormSuccess, { SuccessTemplates } from './FormSuccess';
 import { 
   User, 
   Calendar, 
@@ -29,10 +32,10 @@ import ActionPanel from './ActionPanel';
 export default function SmartCharting() {
   const [showAIPanel, setShowAIPanel] = useState(true);
   const [showComplianceAudit, setShowComplianceAudit] = useState(false);
-  const [isAutoSaving, setIsAutoSaving] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date>(new Date());
+  const [showSuccessScreen, setShowSuccessScreen] = useState(false);
   const { addNotification } = useNotifications();
-  const [formData, setFormData] = useState({
+  
+  const initialFormData = {
     chiefComplaint: 'Routine WIC nutrition assessment and growth monitoring',
     height: '104 cm',
     weight: '16.2 kg',
@@ -42,10 +45,53 @@ export default function SmartCharting() {
     developmentalMilestones: 'Age-appropriate language and motor skills',
     immunizations: 'Up to date per CDC schedule',
     followUp: 'Return in 3 months for routine WIC visit'
-  });
+  };
 
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [formSuccess, setFormSuccess] = useState<{ [key: string]: boolean }>({});
+  const {
+    fields,
+    handleFieldChange,
+    handleFieldBlur,
+    handleSubmit,
+    resetForm,
+    isSubmitting,
+    submitError,
+    submitSuccess,
+    isFormValid,
+    hasErrors,
+    isTouched
+  } = useFormValidation({
+    initialValues: initialFormData,
+    validationRules: {
+      chiefComplaint: createValidationRules.required('Chief complaint'),
+      height: {
+        required: true,
+        custom: (value: string) => {
+          if (!value.trim()) return 'Height is required';
+          if (!/^\d+(\.\d+)?\s*(cm|in)$/i.test(value.trim())) {
+            return 'Please enter height in format "104 cm" or "41 in"';
+          }
+          return null;
+        }
+      },
+      weight: {
+        required: true,
+        custom: (value: string) => {
+          if (!value.trim()) return 'Weight is required';
+          if (!/^\d+(\.\d+)?\s*(kg|lb)$/i.test(value.trim())) {
+            return 'Please enter weight in format "16.2 kg" or "35.7 lb"';
+          }
+          return null;
+        }
+      },
+      temperature: createValidationRules.text(undefined, undefined, false),
+      bloodPressure: createValidationRules.text(undefined, undefined, false),
+      nutritionStatus: createValidationRules.text(10, 500, false),
+      developmentalMilestones: createValidationRules.text(10, 500, false),
+      immunizations: createValidationRules.text(5, 200, false),
+      followUp: createValidationRules.required('Follow-up instructions')
+    },
+    validationTiming: 'smart'
+  });
   const [aiSuggestions] = useState({
     chiefComplaint: {
       confidence: 'high',
@@ -79,80 +125,51 @@ export default function SmartCharting() {
     provider: 'Maria Santos, RN'
   };
 
-  const handleFieldChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    
-    // Clear errors when user starts typing
-    if (formErrors[field]) {
-      setFormErrors(prev => ({ ...prev, [field]: '' }));
-    }
-    
-    // Auto-save after 2 seconds of inactivity
-    clearTimeout((window as any).autoSaveTimeout);
-    (window as any).autoSaveTimeout = setTimeout(() => {
-      handleAutoSave();
-    }, 2000);
-  };
-
-  const handleAutoSave = async () => {
-    setIsAutoSaving(true);
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setLastSaved(new Date());
-    setIsAutoSaving(false);
-  };
+  if (showSuccessScreen) {
+    return (
+      <div className="p-6 max-w-4xl mx-auto">
+        <FormSuccess
+          {...SuccessTemplates.documentSubmitted}
+          submittedData={{
+            patient: patientInfo.name,
+            visitType: patientInfo.visitType,
+            provider: patientInfo.provider,
+            completedAt: new Date().toLocaleString()
+          }}
+          primaryAction={{
+            ...SuccessTemplates.documentSubmitted.primaryAction,
+            onClick: () => setShowSuccessScreen(false)
+          }}
+          secondaryActions={[
+            {
+              label: 'New Patient Visit',
+              onClick: () => {
+                resetForm();
+                setShowSuccessScreen(false);
+              }
+            },
+            {
+              label: 'View Dashboard',
+              onClick: () => window.location.href = '/app/dashboard',
+              variant: 'ghost' as const
+            }
+          ]}
+        />
+      </div>
+    );
+  }
 
   const handleAcceptSuggestion = (field: string) => {
     const suggestion = aiSuggestions[field as keyof typeof aiSuggestions];
     if (suggestion) {
-      setFormData(prev => ({ ...prev, [field]: suggestion.suggestion }));
-      setFormSuccess(prev => ({ ...prev, [field]: true }));
-      setTimeout(() => {
-        setFormSuccess(prev => ({ ...prev, [field]: false }));
-      }, 2000);
+      handleFieldChange(field, suggestion.suggestion);
     }
   };
 
-  const handleCompleteVisit = async () => {
-    // Validate required fields
-    const newErrors: { [key: string]: string } = {};
-    if (!formData.chiefComplaint.trim()) {
-      newErrors.chiefComplaint = 'Chief complaint is required';
-    }
-    if (!formData.height.trim()) {
-      newErrors.height = 'Height measurement is required';
-    }
-    if (!formData.weight.trim()) {
-      newErrors.weight = 'Weight measurement is required';
-    }
-    if (!formData.followUp.trim()) {
-      newErrors.followUp = 'Follow-up instructions are required';
-    }
-
-    setFormErrors(newErrors);
-    
-    if (Object.keys(newErrors).length === 0) {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      addNotification({
-        type: 'success',
-        title: 'Visit Completed',
-        message: 'Patient visit has been successfully documented and saved.',
-        persistent: true,
-        actions: [
-          {
-            label: 'View Summary',
-           onClick: () => window.location.href = '/app/reports',
-            variant: 'primary'
-          },
-          {
-            label: 'Schedule Follow-up',
-           onClick: () => setShowAppointmentScheduler(true),
-            variant: 'secondary'
-          }
-        ]
-      });
-    }
+  const handleCompleteVisit = async (values: { [key: string]: string }) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setShowSuccessScreen(true);
   };
 
   const aiPanelActions = [
@@ -231,54 +248,69 @@ export default function SmartCharting() {
                 <InteractiveInput
                   label="Chief Complaint"
                   type="textarea"
-                  value={formData.chiefComplaint}
+                  value={fields.chiefComplaint?.value || ''}
                   onChange={(value) => handleFieldChange('chiefComplaint', value)}
+                  onBlur={() => handleFieldBlur('chiefComplaint')}
                   placeholder="Enter chief complaint..."
                   required
-                  error={formErrors.chiefComplaint}
-                  success={formSuccess.chiefComplaint}
+                  error={fields.chiefComplaint?.touched ? fields.chiefComplaint?.error || undefined : undefined}
+                  success={fields.chiefComplaint?.valid && fields.chiefComplaint?.touched}
+                  validating={fields.chiefComplaint?.validating}
                   aiSuggestion={aiSuggestions.chiefComplaint}
                   onAcceptSuggestion={() => handleAcceptSuggestion('chiefComplaint')}
                   rows={4}
+                  helpText="Describe the reason for today's visit"
                 />
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <InteractiveInput
                     label="Height"
-                    value={formData.height}
+                    value={fields.height?.value || ''}
                     onChange={(value) => handleFieldChange('height', value)}
+                    onBlur={() => handleFieldBlur('height')}
                     placeholder="Enter height..."
                     required
-                    error={formErrors.height}
-                    success={formSuccess.height}
+                    error={fields.height?.touched ? fields.height?.error || undefined : undefined}
+                    success={fields.height?.valid && fields.height?.touched}
+                    validating={fields.height?.validating}
                     aiSuggestion={aiSuggestions.height}
                     onAcceptSuggestion={() => handleAcceptSuggestion('height')}
+                    helpText="Include units (e.g., 104 cm)"
                   />
                   <InteractiveInput
                     label="Weight"
-                    value={formData.weight}
+                    value={fields.weight?.value || ''}
                     onChange={(value) => handleFieldChange('weight', value)}
+                    onBlur={() => handleFieldBlur('weight')}
                     placeholder="Enter weight..."
                     required
-                    error={formErrors.weight}
-                    success={formSuccess.weight}
+                    error={fields.weight?.touched ? fields.weight?.error || undefined : undefined}
+                    success={fields.weight?.valid && fields.weight?.touched}
+                    validating={fields.weight?.validating}
                     aiSuggestion={aiSuggestions.weight}
                     onAcceptSuggestion={() => handleAcceptSuggestion('weight')}
+                    helpText="Include units (e.g., 16.2 kg)"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <InteractiveInput
                     label="Temperature"
-                    value={formData.temperature}
+                    value={fields.temperature?.value || ''}
                     onChange={(value) => handleFieldChange('temperature', value)}
+                    onBlur={() => handleFieldBlur('temperature')}
                     placeholder="Enter temperature..."
+                    validating={fields.temperature?.validating}
+                    helpText="Optional vital sign measurement"
                   />
                   <InteractiveInput
                     label="Blood Pressure"
-                    value={formData.bloodPressure}
+                    value={fields.bloodPressure?.value || ''}
                     onChange={(value) => handleFieldChange('bloodPressure', value)}
+                    onBlur={() => handleFieldBlur('bloodPressure')}
                     placeholder="Enter blood pressure..."
+                    validating={fields.bloodPressure?.validating}
+                    helpText="Optional vital sign measurement"
                   />
                 </div>
               </div>
@@ -290,23 +322,38 @@ export default function SmartCharting() {
                 <InteractiveInput
                   label="Nutrition Status"
                   type="textarea"
-                  value={formData.nutritionStatus}
+                  value={fields.nutritionStatus?.value || ''}
                   onChange={(value) => handleFieldChange('nutritionStatus', value)}
+                  onBlur={() => handleFieldBlur('nutritionStatus')}
                   placeholder="Enter nutrition status..."
+                  validating={fields.nutritionStatus?.validating}
+                  showCharacterCount
+                  maxLength={500}
+                  helpText="Document current nutritional intake and status"
                 />
                 <InteractiveInput
                   label="Developmental Milestones"
                   type="textarea"
-                  value={formData.developmentalMilestones}
+                  value={fields.developmentalMilestones?.value || ''}
                   onChange={(value) => handleFieldChange('developmentalMilestones', value)}
+                  onBlur={() => handleFieldBlur('developmentalMilestones')}
                   placeholder="Enter developmental milestones..."
+                  validating={fields.developmentalMilestones?.validating}
+                  showCharacterCount
+                  maxLength={500}
+                  helpText="Age-appropriate developmental progress"
                 />
                 <InteractiveInput
                   label="Immunization Status"
                   type="textarea"
-                  value={formData.immunizations}
+                  value={fields.immunizations?.value || ''}
                   onChange={(value) => handleFieldChange('immunizations', value)}
+                  onBlur={() => handleFieldBlur('immunizations')}
                   placeholder="Enter immunization status..."
+                  validating={fields.immunizations?.validating}
+                  showCharacterCount
+                  maxLength={200}
+                  helpText="Current immunization status and updates"
                 />
               </div>
             </ResponsiveCard>
@@ -317,18 +364,62 @@ export default function SmartCharting() {
                 <InteractiveInput
                   label="Follow-up Instructions"
                   type="textarea"
-                  value={formData.followUp}
+                  value={fields.followUp?.value || ''}
                   onChange={(value) => handleFieldChange('followUp', value)}
+                  onBlur={() => handleFieldBlur('followUp')}
                   placeholder="Enter follow-up instructions..."
                   required
-                  error={formErrors.followUp}
-                  success={formSuccess.followUp}
+                  error={fields.followUp?.touched ? fields.followUp?.error || undefined : undefined}
+                  success={fields.followUp?.valid && fields.followUp?.touched}
+                  validating={fields.followUp?.validating}
                   aiSuggestion={aiSuggestions.followUp}
                   onAcceptSuggestion={() => handleAcceptSuggestion('followUp')}
+                  helpText="Required next steps and follow-up plan"
                 />
               </div>
             </ResponsiveCard>
           </div>
+
+          {/* Form Status Bar */}
+          {(hasErrors || !isFormValid) && isTouched && (
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-start space-x-2">
+                <AlertCircle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-yellow-800 font-medium">Form Incomplete</p>
+                  <p className="text-yellow-700 text-sm mt-1">
+                    Please complete all required fields before submitting the visit.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {isFormValid && isTouched && (
+            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="flex items-start space-x-2">
+                <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-green-800 font-medium">Ready to Submit</p>
+                  <p className="text-green-700 text-sm mt-1">
+                    All required fields are complete and validated.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {submitError && (
+            <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-start space-x-2">
+                <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-red-800 font-medium">Submission Error</p>
+                  <p className="text-red-700 text-sm mt-1">{submitError}</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -350,29 +441,26 @@ export default function SmartCharting() {
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Auto-save indicator */}
-              <div className="text-sm text-gray-500">
-                {isAutoSaving ? (
-                  <span className="flex items-center">
-                    <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
-                    Saving...
-                  </span>
-                ) : (
-                  <span>Last saved: {lastSaved.toLocaleTimeString()}</span>
-                )}
-              </div>
+              {/* Form Progress */}
+              {isTouched && (
+                <div className="text-sm text-gray-500">
+                  <span>Form {Math.round((Object.values(fields).filter(f => f.valid && f.value.trim()).length / Object.keys(fields).length) * 100)}% complete</span>
+                </div>
+              )}
               
               <div className="flex space-x-3">
               <InteractiveButton variant="secondary" icon={<Save className="h-4 w-4" />}>
-                Save Draft
+                {isSubmitting ? 'Saving...' : 'Save Draft'}
               </InteractiveButton>
               <AnimatedButton 
                 variant="primary" 
-                onClick={handleCompleteVisit}
+                onClick={() => handleSubmit(handleCompleteVisit)}
+                disabled={!isFormValid || isSubmitting}
+                loading={isSubmitting}
                 icon={<CheckCircle className="h-4 w-4" />}
                 animation="glow"
               >
-                Complete Visit
+                {isSubmitting ? 'Completing...' : 'Complete Visit'}
               </AnimatedButton>
               </div>
             </div>
@@ -408,9 +496,9 @@ export default function SmartCharting() {
       {/* Floating Action Buttons */}
       <FloatingActionButton
         icon={<Save className="h-6 w-6" />}
-        onClick={handleAutoSave}
+        onClick={() => handleSubmit(handleCompleteVisit)}
         position="bottom-left"
-        tooltip="Quick Save"
+        tooltip="Complete Visit"
         color="bg-green-600"
       />
     </div>

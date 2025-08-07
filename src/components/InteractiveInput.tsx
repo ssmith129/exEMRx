@@ -8,7 +8,9 @@ import {
   Info,
   Sparkles,
   ChevronDown,
-  Search
+  Search,
+  Loader2,
+  HelpCircle
 } from 'lucide-react';
 
 interface InteractiveInputProps {
@@ -21,6 +23,11 @@ interface InteractiveInputProps {
   error?: string;
   success?: boolean;
   disabled?: boolean;
+  validating?: boolean;
+  helpText?: string;
+  showCharacterCount?: boolean;
+  maxLength?: number;
+  strengthIndicator?: boolean;
   aiSuggestion?: {
     value: string;
     confidence: 'high' | 'medium' | 'low';
@@ -43,6 +50,11 @@ export default function InteractiveInput({
   error,
   success = false,
   disabled = false,
+  validating = false,
+  helpText,
+  showCharacterCount = false,
+  maxLength,
+  strengthIndicator = false,
   aiSuggestion,
   options = [],
   onAcceptSuggestion,
@@ -55,6 +67,7 @@ export default function InteractiveInput({
   const [showSuggestion, setShowSuggestion] = useState(!!aiSuggestion);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState(options);
+  const [focused, setFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +92,30 @@ export default function InteractiveInput({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Password strength calculation
+  const getPasswordStrength = (password: string) => {
+    if (!password) return { score: 0, text: '', color: '' };
+    
+    let score = 0;
+    if (password.length >= 8) score += 1;
+    if (/[A-Z]/.test(password)) score += 1;
+    if (/[a-z]/.test(password)) score += 1;
+    if (/[0-9]/.test(password)) score += 1;
+    if (/[^A-Za-z0-9]/.test(password)) score += 1;
+    
+    const strength = [
+      { text: 'Very Weak', color: 'bg-red-500' },
+      { text: 'Weak', color: 'bg-orange-500' },
+      { text: 'Fair', color: 'bg-yellow-500' },
+      { text: 'Good', color: 'bg-blue-500' },
+      { text: 'Strong', color: 'bg-green-500' }
+    ];
+    
+    return { score, ...strength[Math.min(score, 4)] };
+  };
+
+  const passwordStrength = type === 'password' && strengthIndicator ? getPasswordStrength(value) : null;
 
   const getConfidenceColor = (confidence: string) => {
     switch (confidence) {
@@ -118,9 +155,11 @@ export default function InteractiveInput({
 
     if (error) {
       classes += ' border-red-500 bg-red-50 text-red-900 placeholder-red-400';
+    } else if (validating) {
+      classes += ' border-blue-300 bg-blue-50/50';
     } else if (success) {
       classes += ' border-green-500 bg-green-50';
-    } else if (isFocused) {
+    } else if (focused) {
       classes += ' border-primary-500 bg-white shadow-sm';
     } else {
       classes += ' border-gray-300 bg-white hover:border-gray-400';
@@ -142,14 +181,22 @@ export default function InteractiveInput({
       ref: inputRef as any,
       value,
       onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value),
-      onFocus: () => setIsFocused(true),
-      onBlur: () => setIsFocused(false),
+      onFocus: () => {
+        setFocused(true);
+        if (onFocus) onFocus();
+      },
+      onBlur: () => {
+        setFocused(false);
+        if (onBlur) onBlur();
+      },
       placeholder,
       disabled,
+      maxLength,
       className: getInputClasses(),
       'aria-describedby': error ? `${label}-error` : undefined,
       'aria-invalid': !!error,
-      required
+      required,
+      'aria-busy': validating
     };
 
     switch (type) {
@@ -188,8 +235,9 @@ export default function InteractiveInput({
               type="text"
               className={`${commonProps.className} pl-10`}
               onFocus={() => {
-                setIsFocused(true);
+                setFocused(true);
                 setIsDropdownOpen(true);
+                if (commonProps.onFocus) commonProps.onFocus();
               }}
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -202,8 +250,8 @@ export default function InteractiveInput({
             <button
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
               disabled={disabled}
               className={`${getInputClasses()} text-left flex items-center justify-between`}
             >
@@ -269,6 +317,12 @@ export default function InteractiveInput({
       <div className="relative">
         {renderInput()}
 
+        {/* Validating Indicator */}
+        {validating && (
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+            <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+          </div>
+        )}
         {/* Search Dropdown */}
         {type === 'search' && isDropdownOpen && filteredOptions.length > 0 && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
@@ -304,7 +358,7 @@ export default function InteractiveInput({
         )}
 
         {/* Success/Error Icons */}
-        {(success || error) && (
+        {(success || error) && !validating && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
             {success ? (
               <Check className="h-5 w-5 text-green-500" />
@@ -345,17 +399,70 @@ export default function InteractiveInput({
         </div>
       )}
 
+      {/* Character Count */}
+      {showCharacterCount && maxLength && (
+        <div className="flex justify-end text-xs text-gray-500 mt-1">
+          <span className={value.length > maxLength * 0.9 ? 'text-orange-600' : ''}>
+            {value.length}/{maxLength}
+          </span>
+        </div>
+      )}
+
+      {/* Password Strength Indicator */}
+      {passwordStrength && value && (
+        <div className="mt-2">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs text-gray-600">Password strength:</span>
+            <span className={`text-xs font-medium ${
+              passwordStrength.score >= 4 ? 'text-green-600' :
+              passwordStrength.score >= 3 ? 'text-blue-600' :
+              passwordStrength.score >= 2 ? 'text-yellow-600' : 'text-red-600'
+            }`}>
+              {passwordStrength.text}
+            </span>
+          </div>
+          <div className="flex space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className={`h-1 flex-1 rounded ${
+                  i < passwordStrength.score ? passwordStrength.color : 'bg-gray-200'
+                }`}
+              />
+            ))}
+          </div>
+          {passwordStrength.score < 3 && (
+            <p className="text-xs text-gray-600 mt-1">
+              Use 8+ characters with a mix of letters, numbers, and symbols
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Help Text */}
+      {helpText && !error && (
+        <div className="flex items-start text-xs text-gray-600 mt-1">
+          <HelpCircle className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0" />
+          <span>{helpText}</span>
+        </div>
+      )}
+
       {/* Error Message */}
       {error && (
-        <div id={`${label}-error`} className="flex items-center text-sm text-red-600 animate-in slide-in-from-top-1 duration-200">
+        <div 
+          id={`${label}-error`} 
+          className="flex items-start text-sm text-red-600 animate-in slide-in-from-top-1 duration-200 mt-1"
+          role="alert"
+          aria-live="polite"
+        >
           <AlertCircle className="h-4 w-4 mr-1 flex-shrink-0" />
-          {error}
+          <span>{error}</span>
         </div>
       )}
 
       {/* Success Message */}
       {success && !error && (
-        <div className="flex items-center text-sm text-green-600 animate-in slide-in-from-top-1 duration-200">
+        <div className="flex items-center text-sm text-green-600 animate-in slide-in-from-top-1 duration-200 mt-1">
           <Check className="h-4 w-4 mr-1 flex-shrink-0" />
           Field validated successfully
         </div>
