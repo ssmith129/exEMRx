@@ -36,6 +36,8 @@ interface InteractiveInputProps {
   options?: string[];
   onAcceptSuggestion?: () => void;
   onRejectSuggestion?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   className?: string;
   rows?: number;
 }
@@ -59,6 +61,8 @@ export default function InteractiveInput({
   options = [],
   onAcceptSuggestion,
   onRejectSuggestion,
+  onFocus,
+  onBlur,
   className = '',
   rows = 3
 }: InteractiveInputProps) {
@@ -183,11 +187,11 @@ export default function InteractiveInput({
       onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value),
       onFocus: () => {
         setFocused(true);
-        if (onFocus) onFocus();
+        onFocus?.();
       },
       onBlur: () => {
         setFocused(false);
-        if (onBlur) onBlur();
+        onBlur?.();
       },
       placeholder,
       disabled,
@@ -237,7 +241,7 @@ export default function InteractiveInput({
               onFocus={() => {
                 setFocused(true);
                 setIsDropdownOpen(true);
-                if (commonProps.onFocus) commonProps.onFocus();
+                onFocus?.();
               }}
             />
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -251,7 +255,10 @@ export default function InteractiveInput({
               type="button"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
+              onBlur={() => {
+                setFocused(false);
+                onBlur?.();
+              }}
               disabled={disabled}
               className={`${getInputClasses()} text-left flex items-center justify-between`}
             >
