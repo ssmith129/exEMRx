@@ -131,22 +131,13 @@ function App() {
                       <Route path="dashboard" element={<Dashboard />} />
                       <Route path="charting" element={<SmartCharting />} />
                       <Route path="referrals" element={<ReferralForm />} />
-                     <Route path="referrals/create" element={<ReferralForm />} />
-                      <Route path="referrals/new" element={<ReferralForm />} />
-                      <Route path="referrals/:id" element={<ReferralForm />} />
-                     <Route path="referrals/manage" element={<ReferralForm />} />
                       <Route path="notes" element={<CaseNotes />} />
                       <Route path="patient/:id" element={<PatientChart patientId="1" onClose={() => window.history.back()} />} />
-                      <Route path="patients" element={<div className="p-6"><h1 className="text-2xl font-bold">Patient Directory</h1><p>Patient management coming soon...</p></div>} />
                       <Route path="reports" element={<ReportsAnalytics />} />
-                      <Route path="reports/compliance" element={<ReportsAnalytics />} />
-                      <Route path="reports/analytics" element={<ReportsAnalytics />} />
+                      <Route path="compliance" element={<ReportsAnalytics />} />
                       <Route path="messages" element={<MessageCenter />} />
                       <Route path="settings" element={<Settings />} />
-                     <Route path="compliance" element={<ReportsAnalytics />} />
-                     <Route path="help" element={<div className="p-6"><h1 className="text-2xl font-bold">Help & Support Center</h1><p>Documentation and support resources coming soon...</p></div>} />
-                     <Route path="help/:topic" element={<div className="p-6"><h1 className="text-2xl font-bold">Help Topic</h1><p>Specific help content coming soon...</p></div>} />
-                     <Route path="appointments" element={<div className="p-6"><h1 className="text-2xl font-bold">Appointments</h1><p>Appointment scheduling coming soon...</p></div>} />
+                      <Route path="help" element={<div className="p-6"><h1 className="text-2xl font-bold">Help & Support Center</h1><p>Documentation and support resources coming soon...</p></div>} />
                       <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
                     </Routes>
                   </Layout>

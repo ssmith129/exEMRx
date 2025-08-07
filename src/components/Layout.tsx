@@ -116,7 +116,7 @@ export default function Layout({ children }: LayoutProps) {
         },
         { 
           name: 'Compliance', 
-         href: '/app/compliance',
+         href: '/app/reports',
           icon: Shield,
           badge: '94%',
           badgeColor: 'success',
@@ -168,7 +168,15 @@ export default function Layout({ children }: LayoutProps) {
     setExpandedGroups(defaultExpanded);
   }, []);
 
-  const isCurrentPage = (href: string) => location.pathname === href;
+  const isCurrentPage = (href: string) => {
+    // Handle exact matches and nested routes
+    if (location.pathname === href) return true;
+    
+    // Special handling for reports/compliance shared route
+    if (href === '/app/reports' && location.pathname === '/app/compliance') return true;
+    
+    return false;
+  };
 
   const toggleGroup = (groupTitle: string) => {
     const groupKey = groupTitle.toLowerCase().replace(/\s+/g, '-');
