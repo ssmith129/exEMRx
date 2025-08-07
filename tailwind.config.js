@@ -5,28 +5,48 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
+          50: '#f0f7ff',
+          100: '#e0efff', 
+          200: '#b8deff',
+          300: '#7cc4ff',
+          400: '#36a7ff',
           500: '#0066cc',
           600: '#0052a3',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a'
+          700: '#003d7a',
+          800: '#002952',
+          900: '#001529'
+        },
+        accent: {
+          50: '#f0fdf9',
+          100: '#ccfbef',
+          200: '#99f6e0',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#14b8a6',
+          600: '#0d9488',
+          700: '#0f766e',
+          800: '#115e59',
+          900: '#134e4a'
+        },
+        healthcare: {
+          trust: '#0066cc',
+          growth: '#14b8a6', 
+          warning: '#f59e0b',
+          critical: '#ef4444',
+          success: '#10b981',
+          neutral: '#6b7280'
         },
         secondary: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
+          50: '#fafbfc',
+          100: '#f4f6f8',
+          200: '#e8ecf0',
+          300: '#d2d9e0',
+          400: '#9ea8b4',
           500: '#6b7280',
           600: '#4b5563',
           700: '#374151',
           800: '#1f2937',
-          900: '#111827'
+          900: '#0f172a'
         },
         success: {
           50: '#ecfdf5',
@@ -46,14 +66,15 @@ export default {
         heading: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
       },
       fontSize: {
-        'xs': ['12px', { lineHeight: '16px' }],
-        'sm': ['14px', { lineHeight: '20px' }],
-        'base': ['16px', { lineHeight: '24px' }],
-        'lg': ['18px', { lineHeight: '28px' }],
-        'xl': ['20px', { lineHeight: '28px' }],
-        '2xl': ['24px', { lineHeight: '32px' }],
-        '3xl': ['30px', { lineHeight: '36px' }],
-        '4xl': ['36px', { lineHeight: '40px' }],
+        'xs': ['12px', { lineHeight: '18px', letterSpacing: '0.02em' }],
+        'sm': ['14px', { lineHeight: '22px', letterSpacing: '0.01em' }], 
+        'base': ['16px', { lineHeight: '26px', letterSpacing: '0' }],
+        'lg': ['18px', { lineHeight: '30px', letterSpacing: '-0.01em' }],
+        'xl': ['20px', { lineHeight: '32px', letterSpacing: '-0.01em' }],
+        '2xl': ['24px', { lineHeight: '36px', letterSpacing: '-0.02em' }],
+        '3xl': ['32px', { lineHeight: '44px', letterSpacing: '-0.02em' }],
+        '4xl': ['40px', { lineHeight: '48px', letterSpacing: '-0.03em' }],
+        '5xl': ['48px', { lineHeight: '56px', letterSpacing: '-0.03em' }],
       },
       spacing: {
         '18': '4.5rem',

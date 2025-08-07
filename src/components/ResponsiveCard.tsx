@@ -34,13 +34,13 @@ export default function ResponsiveCard({
   const getVariantClasses = () => {
     switch (variant) {
       case 'elevated':
-        return 'bg-white shadow-medium border border-gray-100/50';
+        return 'bg-white shadow-xl border border-secondary-100/80 backdrop-blur-sm';
       case 'outlined':
-        return 'bg-white border border-secondary-200';
+        return 'bg-white border-2 border-secondary-200 hover:border-primary-300 transition-colors';
       case 'filled':
-        return 'bg-secondary-50 border border-secondary-100';
+        return 'bg-gradient-to-br from-secondary-50 to-primary-50/30 border border-secondary-100';
       default:
-        return 'bg-white shadow-soft border border-secondary-100/80';
+        return 'bg-white shadow-lg border border-secondary-100/80 hover:shadow-xl transition-shadow duration-300';
     }
   };
 

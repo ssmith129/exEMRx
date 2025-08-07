@@ -176,14 +176,14 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-2.5 rounded-xl shadow-lg">
+              <div className="bg-gradient-to-br from-healthcare-trust via-primary-600 to-accent-600 p-3 rounded-2xl shadow-xl">
                 <FileText className="h-8 w-8 text-white" />
               </div>
               <div>
-                <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <div className="text-2xl font-bold bg-gradient-to-r from-healthcare-trust to-accent-600 bg-clip-text text-transparent tracking-tight">
                   ezEMRx
                 </div>
-                <p className="text-xs text-gray-500 font-medium">Healthcare Reimagined</p>
+                <p className="text-xs text-gray-600 font-medium tracking-wide uppercase">Healthcare Reimagined</p>
               </div>
             </div>
 

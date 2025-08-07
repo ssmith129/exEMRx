@@ -40,27 +40,27 @@ export default function InteractiveButton({
     switch (variant) {
       case 'primary':
         return `
-          bg-primary-500 text-white border-primary-500 shadow-soft
-          hover:bg-primary-600 hover:border-primary-600 hover:shadow-medium
+          bg-gradient-to-r from-healthcare-trust to-primary-600 text-white border-healthcare-trust shadow-lg
+          hover:from-primary-700 hover:to-primary-700 hover:shadow-xl
           focus:ring-primary-500/30 focus:bg-primary-600
-          active:bg-primary-700 active:border-primary-700
-          disabled:bg-secondary-300 disabled:border-secondary-300 disabled:shadow-none
+          active:from-primary-800 active:to-primary-800
+          disabled:from-secondary-300 disabled:to-secondary-300 disabled:shadow-none
         `;
       case 'secondary':
         return `
-          bg-white text-secondary-700 border-secondary-200 shadow-soft
-          hover:bg-secondary-50 hover:border-secondary-300 hover:shadow-medium
+          bg-white text-secondary-800 border-secondary-200 shadow-md backdrop-blur-sm
+          hover:bg-secondary-50 hover:border-secondary-300 hover:shadow-lg
           focus:ring-primary-500 focus:border-primary-500
           active:bg-secondary-100
-          disabled:bg-secondary-50 disabled:text-secondary-400 disabled:border-secondary-200 disabled:shadow-none
+          disabled:bg-secondary-50 disabled:text-secondary-400 disabled:border-secondary-200
         `;
       case 'success':
         return `
-          bg-success-500 text-white border-success-500 shadow-soft
-          hover:bg-success-600 hover:border-success-600 hover:shadow-medium
+          bg-gradient-to-r from-healthcare-success to-accent-600 text-white border-healthcare-success shadow-lg
+          hover:from-success-600 hover:to-accent-700 hover:shadow-xl
           focus:ring-success-500/30 focus:bg-success-600
-          active:bg-success-700 active:border-success-700
-          disabled:bg-success-300 disabled:border-success-300 disabled:shadow-none
+          active:from-success-700 active:to-accent-800
+          disabled:from-success-300 disabled:to-success-300
         `;
       case 'danger':
         return `

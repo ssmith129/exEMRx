@@ -327,14 +327,14 @@ export default function Layout({ children }: LayoutProps) {
       `}>
         
         {/* Header Section */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-blue-50">
+        <div className="flex items-center justify-between h-20 px-8 border-b border-secondary-200/50 bg-gradient-to-r from-primary-50/50 via-white to-accent-50/30 backdrop-blur-sm">
           <div className="flex items-center space-x-3">
-            <div className="bg-primary-500 p-2 rounded-xl shadow-soft">
+            <div className="bg-gradient-to-br from-healthcare-trust to-primary-600 p-3 rounded-2xl shadow-lg">
               <FileText className="h-6 w-6 text-white" />
             </div>
             <div>
-              <span className="text-xl font-bold text-gray-900">ezEMRx</span>
-              <p className="text-xs text-gray-500 font-medium">Healthcare EHR</p>
+              <span className="text-2xl font-bold text-secondary-900 tracking-tight">ezEMRx</span>
+              <p className="text-xs text-secondary-600 font-semibold uppercase tracking-wider">Healthcare EHR</p>
             </div>
           </div>
           

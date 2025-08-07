@@ -201,8 +201,10 @@ export default function Dashboard() {
       
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard - Overview</h1>
-        <p className="text-gray-600 mt-2">Welcome back, Dr. Chen. Here's what's happening at your clinic today.</p>
+        <div className="bg-gradient-to-r from-white via-primary-50/30 to-accent-50/20 rounded-2xl p-8 border border-secondary-100 shadow-sm">
+          <h1 className="text-4xl font-bold text-secondary-900 tracking-tight mb-3">Dashboard Overview</h1>
+          <p className="text-lg text-secondary-700 max-w-2xl leading-relaxed">Welcome back, Dr. Chen. Here's what's happening at your clinic today.</p>
+        </div>
       </div>
 
       {/* Stats Grid */}
