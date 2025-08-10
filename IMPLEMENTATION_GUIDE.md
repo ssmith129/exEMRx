@@ -33,14 +33,42 @@ npm install react-helmet-async
 
 ```typescript
 import { HelmetProvider } from 'react-helmet-async';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { NotificationProvider } from './components/NotificationSystem';
+import { AuthProvider } from './hooks/useAuth';
+import Layout from './components/Layout';
+import OptimizedDashboard from './components/OptimizedDashboard';
+// ... other imports
 
 function App() {
   return (
     <HelmetProvider>
-      {/* Your existing app structure */}
+      <NotificationProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
+              <Route path="/app" element={<Layout />}>
+                <Route path="dashboard" element={<OptimizedDashboard />} />
+                <Route path="charting" element={<SmartCharting />} />
+                <Route path="patients" element={<PatientManagement />} />
+                <Route path="reports" element={<ReportsAnalytics />} />
+                <Route path="compliance" element={<ComplianceDashboard />} />
+                <Route path="messages" element={<MessageCenter />} />
+                <Route path="appointments" element={<AppointmentScheduler />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="help" element={<HelpCenter />} />
+                <Route path="*" element={<Navigate to="/app/dashboard" replace />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
+      </NotificationProvider>
     </HelmetProvider>
   );
 }
+
+export default App;
 ```
 
 ### Step 3: Replace Existing Components
