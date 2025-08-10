@@ -29,6 +29,9 @@ export default function MessageCenter() {
   const [selectedFolder, setSelectedFolder] = useState('inbox');
   const [showCompose, setShowCompose] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const [composeTo, setComposeTo] = useState('');
+  const [composeSubject, setComposeSubject] = useState('');
+  const [composeMessage, setComposeMessage] = useState('');
   const { addNotification } = useNotifications();
 
   const folders = [
@@ -302,21 +305,21 @@ export default function MessageCenter() {
         <div className="p-6 space-y-4">
           <InteractiveInput
             label="To"
-            value=""
-            onChange={() => {}}
+            value={composeTo}
+            onChange={setComposeTo}
             placeholder="Select recipients..."
           />
           <InteractiveInput
             label="Subject"
-            value=""
-            onChange={() => {}}
+            value={composeSubject}
+            onChange={setComposeSubject}
             placeholder="Enter subject..."
           />
           <InteractiveInput
             label="Message"
             type="textarea"
-            value=""
-            onChange={() => {}}
+            value={composeMessage}
+            onChange={setComposeMessage}
             placeholder="Type your message..."
             rows={8}
           />
