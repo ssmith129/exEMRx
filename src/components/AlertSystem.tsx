@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   AlertTriangle, 
   CheckCircle, 
@@ -225,19 +225,19 @@ export const useAlerts = () => {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   };
 
-  const addAlert = (alert: Omit<Alert, 'id' | 'timestamp'>) => {
+  const addAlert = useCallback((alert: Omit<Alert, 'id' | 'timestamp'>) => {
     const newAlert: Alert = {
       ...alert,
       id: generateUniqueId(),
       timestamp: new Date()
     };
-    
+
     setAlerts(prev => [...prev, newAlert]);
 
     // Auto-expire if specified
     if (alert.autoExpire) {
       setTimeout(() => {
-        dismissAlert(newAlert.id);
+        setAlerts(prevAlerts => prevAlerts.filter(a => a.id !== newAlert.id));
       }, alert.autoExpire * 60 * 1000);
     }
 
@@ -250,24 +250,27 @@ export const useAlerts = () => {
         persistent: alert.priority === 'critical'
       });
     }
-  };
+  }, [addNotification]);
 
-  const dismissAlert = (id: string) => {
+  const dismissAlert = useCallback((id: string) => {
     setAlerts(prev => prev.filter(alert => alert.id !== id));
-  };
+  }, []);
 
-  const handleAction = (alertId: string, actionIndex: number) => {
-    const alert = alerts.find(a => a.id === alertId);
-    if (alert && alert.actions && alert.actions[actionIndex]) {
-      alert.actions[actionIndex].onClick();
-      // Optionally dismiss alert after action
-      dismissAlert(alertId);
-    }
-  };
+  const handleAction = useCallback((alertId: string, actionIndex: number) => {
+    setAlerts(prev => {
+      const alert = prev.find(a => a.id === alertId);
+      if (alert && alert.actions && alert.actions[actionIndex]) {
+        alert.actions[actionIndex].onClick();
+        // Optionally dismiss alert after action
+        return prev.filter(a => a.id !== alertId);
+      }
+      return prev;
+    });
+  }, []);
 
-  const clearAllAlerts = () => {
+  const clearAllAlerts = useCallback(() => {
     setAlerts([]);
-  };
+  }, []);
 
   const getAlertsByCategory = (category: string) => {
     return alerts.filter(alert => alert.category === category);
