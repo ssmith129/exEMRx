@@ -112,6 +112,25 @@ export default function MessageCenter() {
     }
   };
 
+  const handleCloseCompose = () => {
+    setShowCompose(false);
+    setComposeTo('');
+    setComposeSubject('');
+    setComposeMessage('');
+  };
+
+  const handleSendMessage = () => {
+    if (composeTo.trim() && composeSubject.trim() && composeMessage.trim()) {
+      addNotification({
+        type: 'success',
+        title: 'Message Sent',
+        message: 'Your message has been sent successfully.',
+        duration: 3000
+      });
+      handleCloseCompose();
+    }
+  };
+
   const renderMessageList = () => (
     <div className="space-y-2">
       {messages.map(message => (
