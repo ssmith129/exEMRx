@@ -39,7 +39,7 @@ export default function Dashboard() {
     addAlert(AlertTemplates.patientOverdue('Maria Rodriguez', 5));
     addAlert(AlertTemplates.complianceIssue('Missing immunization records for 3 patients'));
     addAlert(AlertTemplates.systemMaintenance('Tonight at 11 PM', '2 hours'));
-  }, []);
+  }, [addAlert]);
 
   const stats = [
     {
