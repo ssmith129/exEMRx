@@ -35,10 +35,14 @@ export default function Dashboard() {
   const { addNotification } = useNotifications();
 
   // Initialize with some sample alerts
+  const alertsInitialized = React.useRef(false);
   React.useEffect(() => {
-    addAlert(AlertTemplates.patientOverdue('Maria Rodriguez', 5));
-    addAlert(AlertTemplates.complianceIssue('Missing immunization records for 3 patients'));
-    addAlert(AlertTemplates.systemMaintenance('Tonight at 11 PM', '2 hours'));
+    if (!alertsInitialized.current) {
+      addAlert(AlertTemplates.patientOverdue('Maria Rodriguez', 5));
+      addAlert(AlertTemplates.complianceIssue('Missing immunization records for 3 patients'));
+      addAlert(AlertTemplates.systemMaintenance('Tonight at 11 PM', '2 hours'));
+      alertsInitialized.current = true;
+    }
   }, [addAlert]);
 
   const stats = [
