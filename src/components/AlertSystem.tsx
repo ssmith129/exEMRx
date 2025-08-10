@@ -220,10 +220,15 @@ export const useAlerts = () => {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const { addNotification } = useNotifications();
 
+  // Generate unique ID to prevent duplicates
+  const generateUniqueId = () => {
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  };
+
   const addAlert = (alert: Omit<Alert, 'id' | 'timestamp'>) => {
     const newAlert: Alert = {
       ...alert,
-      id: Date.now().toString(),
+      id: generateUniqueId(),
       timestamp: new Date()
     };
     
