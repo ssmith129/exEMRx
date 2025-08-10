@@ -68,10 +68,15 @@ export default function InteractiveInput({
 }: InteractiveInputProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [showSuggestion, setShowSuggestion] = useState(!!aiSuggestion);
+  const [showSuggestion, setShowSuggestion] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState(options);
   const [focused, setFocused] = useState(false);
+
+  // Handle AI suggestion visibility changes
+  useEffect(() => {
+    setShowSuggestion(!!aiSuggestion);
+  }, [aiSuggestion]);
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +89,14 @@ export default function InteractiveInput({
     } else {
       setFilteredOptions(options);
     }
-  }, [value, options, type]);
+  }, [value, type]);
+
+  // Separate effect for options changes to prevent infinite loops
+  useEffect(() => {
+    if (type !== 'search' || !value) {
+      setFilteredOptions(options);
+    }
+  }, [options, type, value]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
