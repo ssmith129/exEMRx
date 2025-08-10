@@ -283,20 +283,22 @@ export default function InteractiveInput({
             </button>
             
             {isDropdownOpen && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-                {filteredOptions.map((option, index) => (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => handleOptionSelect(option)}
-                    className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-lg last:rounded-b-lg"
-                  >
-                    {option}
-                  </button>
-                ))}
-                {filteredOptions.length === 0 && (
-                  <div className="px-4 py-3 text-sm text-gray-500">No options found</div>
-                )}
+              <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-64 overflow-auto animate-in slide-in-from-top-2 duration-200">
+                <div className="py-1">
+                  {filteredOptions.map((option, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => handleOptionSelect(option)}
+                      className="w-full px-4 py-3 text-left text-sm text-gray-900 hover:bg-primary-50 hover:text-primary-700 focus:bg-primary-50 focus:text-primary-700 focus:outline-none transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl"
+                    >
+                      {option}
+                    </button>
+                  ))}
+                  {filteredOptions.length === 0 && (
+                    <div className="px-4 py-3 text-sm text-gray-500 text-center">No options found</div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -343,21 +345,27 @@ export default function InteractiveInput({
           </div>
         )}
         {/* Search Dropdown */}
-        {type === 'search' && isDropdownOpen && filteredOptions.length > 0 && (
-          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
-            {filteredOptions.map((option, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => handleOptionSelect(option)}
-                className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 focus:bg-gray-50 focus:outline-none first:rounded-t-lg last:rounded-b-lg"
-                style={{
-                  animationDelay: `${index * 50}ms`
-                }}
-              >
-                {option}
-              </button>
-            ))}
+        {type === 'search' && isDropdownOpen && (
+          <div className="absolute z-50 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-xl max-h-64 overflow-auto animate-in slide-in-from-top-2 duration-200">
+            <div className="py-1">
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((option, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => handleOptionSelect(option)}
+                    className="w-full px-4 py-3 text-left text-sm text-gray-900 hover:bg-primary-50 hover:text-primary-700 focus:bg-primary-50 focus:text-primary-700 focus:outline-none transition-colors duration-150 first:rounded-t-xl last:rounded-b-xl"
+                    style={{
+                      animationDelay: `${index * 30}ms`
+                    }}
+                  >
+                    {option}
+                  </button>
+                ))
+              ) : (
+                <div className="px-4 py-3 text-sm text-gray-500 text-center">No options found</div>
+              )}
+            </div>
           </div>
         )}
 
