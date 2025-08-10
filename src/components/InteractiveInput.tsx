@@ -70,7 +70,7 @@ export default function InteractiveInput({
   const [isFocused, setIsFocused] = useState(false);
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState(options);
+  const [filteredOptions, setFilteredOptions] = useState(() => options);
   const [focused, setFocused] = useState(false);
 
   // Handle AI suggestion visibility changes
