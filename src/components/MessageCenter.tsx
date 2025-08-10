@@ -349,7 +349,12 @@ export default function MessageCenter() {
           </InteractiveButton>
           <div className="flex space-x-2">
             <InteractiveButton variant="secondary">Save Draft</InteractiveButton>
-            <InteractiveButton variant="primary" icon={<Send className="h-4 w-4" />}>
+            <InteractiveButton
+              variant="primary"
+              icon={<Send className="h-4 w-4" />}
+              onClick={handleSendMessage}
+              disabled={!composeTo.trim() || !composeSubject.trim() || !composeMessage.trim()}
+            >
               Send Message
             </InteractiveButton>
           </div>
