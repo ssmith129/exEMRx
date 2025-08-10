@@ -89,14 +89,7 @@ export default function InteractiveInput({
     } else {
       setFilteredOptions(options);
     }
-  }, [value, type]);
-
-  // Separate effect for options changes to prevent infinite loops
-  useEffect(() => {
-    if (type !== 'search' || !value) {
-      setFilteredOptions(options);
-    }
-  }, [options, type, value]);
+  }, [value, options, type]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
