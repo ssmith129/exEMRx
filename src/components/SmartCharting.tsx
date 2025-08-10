@@ -92,28 +92,28 @@ export default function SmartCharting() {
     },
     validationTiming: 'smart'
   });
-  const [aiSuggestions] = useState({
+  const [aiSuggestions] = useState(() => ({
     chiefComplaint: {
-      confidence: 'high',
+      confidence: 'high' as const,
       source: 'Based on scheduled appointment type: WIC Nutrition Visit',
       suggestion: 'Routine WIC nutrition assessment and growth monitoring'
     },
     height: {
-      confidence: 'medium',
+      confidence: 'medium' as const,
       source: 'Growth chart prediction based on previous visits',
       suggestion: '104 cm (50th percentile for age)'
     },
     weight: {
-      confidence: 'medium', 
+      confidence: 'medium' as const,
       source: 'Growth trend analysis from last 6 months',
       suggestion: '16.2 kg (55th percentile for age)'
     },
     followUp: {
-      confidence: 'high',
+      confidence: 'high' as const,
       source: 'WIC program guidelines',
       suggestion: 'Return in 3 months for routine WIC visit'
     }
-  });
+  }));
 
   const patientInfo = {
     name: 'Sofia Martinez',

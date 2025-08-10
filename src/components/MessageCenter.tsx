@@ -29,6 +29,9 @@ export default function MessageCenter() {
   const [selectedFolder, setSelectedFolder] = useState('inbox');
   const [showCompose, setShowCompose] = useState(false);
   const [replyText, setReplyText] = useState('');
+  const [composeTo, setComposeTo] = useState('');
+  const [composeSubject, setComposeSubject] = useState('');
+  const [composeMessage, setComposeMessage] = useState('');
   const { addNotification } = useNotifications();
 
   const folders = [
@@ -106,6 +109,25 @@ export default function MessageCenter() {
         duration: 3000
       });
       setReplyText('');
+    }
+  };
+
+  const handleCloseCompose = () => {
+    setShowCompose(false);
+    setComposeTo('');
+    setComposeSubject('');
+    setComposeMessage('');
+  };
+
+  const handleSendMessage = () => {
+    if (composeTo.trim() && composeSubject.trim() && composeMessage.trim()) {
+      addNotification({
+        type: 'success',
+        title: 'Message Sent',
+        message: 'Your message has been sent successfully.',
+        duration: 3000
+      });
+      handleCloseCompose();
     }
   };
 
@@ -295,28 +317,28 @@ export default function MessageCenter() {
       <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">Compose Message</h2>
-          <InteractiveButton variant="ghost" onClick={() => setShowCompose(false)}>
+          <InteractiveButton variant="ghost" onClick={handleCloseCompose}>
             ×
           </InteractiveButton>
         </div>
         <div className="p-6 space-y-4">
           <InteractiveInput
             label="To"
-            value=""
-            onChange={() => {}}
+            value={composeTo}
+            onChange={setComposeTo}
             placeholder="Select recipients..."
           />
           <InteractiveInput
             label="Subject"
-            value=""
-            onChange={() => {}}
+            value={composeSubject}
+            onChange={setComposeSubject}
             placeholder="Enter subject..."
           />
           <InteractiveInput
             label="Message"
             type="textarea"
-            value=""
-            onChange={() => {}}
+            value={composeMessage}
+            onChange={setComposeMessage}
             placeholder="Type your message..."
             rows={8}
           />
@@ -327,7 +349,12 @@ export default function MessageCenter() {
           </InteractiveButton>
           <div className="flex space-x-2">
             <InteractiveButton variant="secondary">Save Draft</InteractiveButton>
-            <InteractiveButton variant="primary" icon={<Send className="h-4 w-4" />}>
+            <InteractiveButton
+              variant="primary"
+              icon={<Send className="h-4 w-4" />}
+              onClick={handleSendMessage}
+              disabled={!composeTo.trim() || !composeSubject.trim() || !composeMessage.trim()}
+            >
               Send Message
             </InteractiveButton>
           </div>
